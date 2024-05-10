@@ -9,6 +9,14 @@ module.exports = cds.service.impl(async function () {
     //     account,
     //     customer
     
+    this.on('postcall', async (req) => 
+    {
+        debugger
+        var BPA = await cds.connect.to('INVOICE_DEST');
+        // var body = 
+        let destt = await BPA.post(`/sap/opu/odata/sap/ZMM_ADVANCE_PAY_SRV/AdvancePayRequestSet`);
+
+    });
 
     this.on('getcallfromodata', async (req) => 
     {

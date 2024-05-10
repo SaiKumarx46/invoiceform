@@ -96,6 +96,20 @@ sap.ui.define([
                 //     target: { semanticObject: "advance", action: "display" },
                 // });
 
+                debugger
+                var fname = "postcall";
+                let fname1 = this.getView().getModel().bindContext(`/${fname}(...)`);
+                fname1.setParameter('po_number', 1);
+                try {
+                    await fname1.execute();
+                } catch (error) {
+                    debugger
+                    console.log(error)
+                }
+
+
+                console.log("func completed");
+
 
 
             },
