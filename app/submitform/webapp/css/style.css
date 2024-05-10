@@ -1,0 +1,71 @@
+/* Enter your custom styles here */
+
+.form-element {
+    margin-right: 10px; /* Adjust the margin as needed */
+}
+
+.go_btn_vbox{
+    margin-top: auto;
+}
+
+.right-aligned{
+    float: right;
+    margin-left: 20px;
+    margin-top: auto;
+}
+
+.element {
+    margin-bottom: 10px; /* Adjust this value for the desired spacing */
+}
+
+.tott{
+    margin-top: 7px;
+    margin-right: 7px;
+}
+
+.totval{
+    margin-left: 48px;
+}
+
+.totvalinr{
+    margin-top: 7px;
+    margin-left: 7px;
+}
+
+.cgst{
+    margin-top: 7px;
+    margin-right: 6px;
+}
+
+.cgstval{
+    margin-left: 40px;
+}
+
+.cgstinr{
+    margin-top: 7px;
+    margin-left: 7px;
+}
+
+.sgst{
+    margin-top: 7px;
+    margin-right: 7px;
+}
+
+.sgstval{
+    margin-left: 48px;
+}
+
+.sgstinr{
+    margin-top: 7px;
+    margin-left: 7px;
+}
+
+.totalvalue{
+    margin-top: 7px;
+}
+
+.totalvalueinr{
+    margin-top: 7px;
+    margin-left: 7px;
+
+}

@@ -1,0 +1,61 @@
+{
+    "name": "invoiceform",
+    "version": "1.0.0",
+    "description": "A simple CAP project.",
+    "repository": "<Add your repository here>",
+    "license": "UNLICENSED",
+    "private": true,
+    "dependencies": {
+        "@sap-cloud-sdk/connectivity": "3.15.0",
+        "@sap-cloud-sdk/http-client": "3.15.0",
+        "@sap/cds": "^7",
+        "@sap/cds-hana": "^2",
+        "@sap/xsenv": "^5.1.0",
+        "@sap/xssec": "^3.6.1",
+        "axios": "^1.6.8",
+        "express": "^4",
+        "passport": "^0.7.0"
+    },
+    "devDependencies": {
+        "@cap-js/sqlite": "^1",
+        "@sap/cds-dk": "^7",
+        "@sap/ux-specification": "^1.120.9",
+        "rimraf": "^3.0.2"
+    },
+    "scripts": {
+        "start": "cds-serve",
+        "undeploy": "cf undeploy invoiceform --delete-services --delete-service-keys --delete-service-brokers",
+        "build": "rimraf resources mta_archives && mbt build --mtar archive",
+        "deploy": "cf deploy mta_archives/archive.mtar --retries 1",
+        "watch-advancesubmitform": "cds watch --open advancesubmitform/webapp/index.html?sap-ui-xx-viewCache=false",
+        "watch-preadvanceaplist": "cds watch --open preadvanceaplist/webapp/index.html?sap-ui-xx-viewCache=false",
+        "watch-submitform": "cds watch --open submitform/webapp/index.html?sap-ui-xx-viewCache=false"
+    },
+    "cds": {
+        "requires": {
+            "destinations": true,
+            "INVOICE_DEST": {
+                "kind": "odata-v2",
+                "csrf": true,
+                "csrfInBatch": true,
+                "credentials": {
+                    "destination": "INVOICE_DEST",
+                    "requestTimeout": 120000
+                },
+                "destinationOptions": {
+                    "selectionStrategy": "alwaysProvider",
+                    "jwt": null
+                }
+            },
+            "pool": {
+                "max": 500,
+                "min": 10
+            },
+            "db": "hana",
+            "auth": "dummy"
+        }
+    },
+    "sapux": [
+        "app/preadvanceaplist"
+    ]
+}

@@ -1,0 +1,436 @@
+<!-- <mvc:View controllerName="submitform.controller.form"
+    xmlns:mvc="sap.ui.core.mvc" displayBlock="true"
+    xmlns="sap.m">
+    <Page id="page" title="{i18n>title}">
+        <content />
+    </Page>
+</mvc:View>
+ -->
+
+ <mvc:View controllerName="submitform.controller.form"
+    xmlns:html="http://www.w3.org/1999/xhtml"
+    xmlns:mvc="sap.ui.core.mvc" displayBlock="true"
+    xmlns:l="sap.ui.layout"
+    xmlns:uxap="sap.uxap"
+    xmlns:f="sap.ui.layout.form"
+    xmlns:core="sap.ui.core"
+    xmlns:form="sap.ui.layout.form"
+    xmlns:smartForm="sap.ui.comp.smartform"
+    xmlns:smartField="sap.ui.comp.smartfield"
+    xmlns="sap.m"
+     xmlns:macros="sap.fe.macros" 
+    xmlns:upload="sap.m.upload">
+    
+   <App id="app" >
+        <pages>
+            <Page xmlns="sap.m" title="Advance Payment Form">
+                <uxap:ObjectPageLayout id="ObjectPageLayout">
+                    <uxap:sections>
+                        <uxap:ObjectPageSection title="PO Line Items" titleUppercase="false">
+                            <uxap:subSections>
+                                <uxap:ObjectPageSubSection title="PO Line Items" mode="Collapsed" titleUppercase="false">
+                                    <uxap:blocks>
+                                    	<HBox id="_IDGenHBox1">
+                                             <VBox class="form-element">
+                                                 <Label id="PoId" text="PO Number" labelFor="input-a"/>
+                                                 <Input id="input-1" required="true" width="200px"/>
+                                             </VBox>
+                                            <VBox class="form-element">
+                                                 <Label id="Conid" text="Contract Number" labelFor="input-b"/>
+                                                  <Input id="input-b" required="true" width="200px"/>
+                                            </VBox>
+                                             <VBox class="form-element">
+                                                <Label id="Venname" text="Vendor Name" labelFor="input-c"/>
+                                                <Input id="input-c" width="200px"/>
+                                             </VBox>
+                                            <VBox class="form-element">
+                                                <Label id="Vengst" text="Vendor GSTN" labelFor="input-d"/>
+                                                <Input id="input-d" width="200px"/>
+                                            </VBox>
+                                            <VBox class="form-element">
+                                                <Label id="Vencode" text="Vendor Code" labelFor="input-e"/>
+                                                <Input id="input-e" required="true" width="200px"/>
+                                            </VBox>
+                                            <VBox class="go_btn_vbox">
+                                            <Button id="_IDGenButton1" text="Go" press="onPress" />
+                                            </VBox>
+                                        </HBox>
+
+                                        <!-- <f:Form>
+                                            <f:layout>
+                                                <f:ColumnLayout  columnsXL="5"/>
+                                            </f:layout>
+                                            <f:FormContainer>
+
+                                               
+                                                <f:FormElement label="PO Number" >
+                                                     <Input id="input-b" required="true" width="200px"/>
+                                                </f:FormElement>
+
+                                                 <f:FormElement label="Contract Number" >
+                                                     <Input id="input-c" required="true" width="200px"/>
+                                                </f:FormElement>
+
+                                                <f:FormElement label="Vendor Name" >
+                                                     <Input id="input-d"  width="200px"/>
+                                                </f:FormElement>
+
+                                                  <f:FormElement label="Vendor Gstin" >
+                                                     <Input id="input-e"  width="200px"/>
+                                                </f:FormElement>
+
+                                                  <f:FormElement label="Vendor Code" >
+                                                     <Input id="input-f" width="200px"/>
+                                                </f:FormElement>
+
+                                             
+
+                                            </f:FormContainer>
+                                        </f:Form> -->
+
+                                    </uxap:blocks>
+                                </uxap:ObjectPageSubSection>
+                            </uxap:subSections>
+                        </uxap:ObjectPageSection>
+
+
+                        <uxap:ObjectPageSection title="Details" titleUppercase="false">
+                            <uxap:subSections>
+                                <uxap:ObjectPageSubSection title="Payment Information" mode="Collapsed" titleUppercase="false">
+                                    <uxap:blocks>
+
+                                        <HBox id="_IDGenHBox3">
+		
+                                            <VBox  class="form-element">
+                                                <Label id = "advanceno" text="Advance payment number" labelFor="input-a" />
+                                                <Input id="input-4" required="true" width="200px" />
+                                            </VBox>
+                                            <VBox  class="form-element">
+                                                <Label id = "advnacedate" text="Advance payment date" labelFor="input-b" />
+                                                <Input id="input-5" required="true" width="200px" />
+                                            </VBox>		
+                                            <VBox  class="form-element">
+                                                <Label id = "advancevalue" text="Adavnce payment value -INR" labelFor="input-c" />
+                                                <Input id="input-6" required="true" width="200px" />
+                                            </VBox>
+                                        
+                                            <!-- <Button core:require="{ handler: 'advancedpayment/ext/fragment/Payment'}" text="Payment" press="handler.onPress" /> -->
+                                            
+                                        </HBox>
+                                    </uxap:blocks>
+                                </uxap:ObjectPageSubSection>
+                            </uxap:subSections>
+                        </uxap:ObjectPageSection>
+
+
+                            
+                         <uxap:ObjectPageSection title="Details" titleUppercase="false">
+                            <uxap:subSections>
+                                <uxap:ObjectPageSubSection title="Advance payment line items" mode="Collapsed" titleUppercase="false">
+                                    <uxap:blocks>
+                                     <Table id="table"  selectionChange="onRowSelected" mode="MultiSelect" 
+                                        items="{
+                                                path: '/polineitem'}">
+                                        <columns>
+                                            <Column>
+                                                <Text id="itemId" text="Item No" />
+                                            </Column>
+                                            <Column>
+                                                <Text text="Item Description" />
+                                            </Column>
+                                            <Column>
+                                                <Text text="Item Description Condition" />
+                                            </Column>
+                                            <Column>
+                                                <Text text="Plant" />
+                                            </Column>
+                                            <Column>
+                                                <Text text="Unit Price" />
+                                            </Column>
+                                            <Column>
+                                                <Text text="Quantity" />
+                                            </Column>
+                                            <Column>
+                                                <Text text="CGST %" />
+                                            </Column>
+                                            <Column>
+                                                <Text text="SGST %" />
+                                            </Column>
+                                            <Column>
+                                                <Text text="CGST Value" />
+                                            </Column>
+                                            <Column>
+                                                <Text text="SGST Value" />
+                                            </Column>
+                                            <Column>
+                                                <Text text="Amount" visible="false"/>
+                                            </Column>
+                                        </columns>
+                                        <items>
+                                            <ColumnListItem >
+                                                <cells>
+                                                    <Text text="{itemno}" />
+                                                    <Text text="{item_desc}" />
+                                                    <Text text="{item_desc_cond}" />
+                                                    <Text text="{plant}" />
+                                                    <Text text="{unit_price}" />
+                                                    <Text text="{quantity}" />
+                                                    <Text text="{cgst_percentage}" />
+                                                    <Text text="{sgst_percentage}" />
+                                                    <Text text="{cgst_value}" />
+                                                    <Text text="{sgst_value}" />
+                                                </cells>
+                                            </ColumnListItem>
+                                        </items>
+                                    </Table>
+
+                                      
+
+                                    </uxap:blocks>
+                                </uxap:ObjectPageSubSection>
+                            </uxap:subSections>
+                        </uxap:ObjectPageSection>
+
+
+
+        
+                         <uxap:ObjectPageSection title="Details" titleUppercase="false">
+                            <uxap:subSections>
+                                <uxap:ObjectPageSubSection title="Added Item Information" mode="Collapsed" titleUppercase="false">
+                                    <uxap:blocks>
+                                     <VBox>
+                                        <Table id="helo" items="{
+                                                                path: '/checkedpolineitem' 
+                                                                }">
+                                            <columns>
+                                                <Column width="10rem">
+                                                    <Text text="Item No" />
+                                                </Column>
+                                                <Column>
+                                                    <Text text="Item Description" />
+                                                </Column>
+                                                <Column>
+                                                    <Text text="Item Description Condition" />
+                                                </Column>
+                                                <Column>
+                                                    <Text text="Plant" />
+                                                </Column>
+                                                <Column>
+                                                    <Text text="Unit Price" />
+                                                </Column>
+                                                <Column>
+                                                    <Text text="Quantity" />
+                                                </Column>
+                                                <Column>
+                                                    <Text text="CGST %" />
+                                                </Column>
+                                                <Column>
+                                                    <Text text="SGST %" />
+                                                </Column>
+                                                <Column>
+                                                    <Text text="CGST Value" />
+                                                </Column>
+                                                <Column>
+                                                    <Text text="SGST Value" />
+                                                </Column>
+                                                <Column>
+                                                    <Text text="Amount"  />
+                                                </Column>
+                                            </columns>
+                                            <items>
+                                                <ColumnListItem>
+                                                    <cells>
+                                                        <Text text="{itemno}" />
+                                                        <Text text="{item_desc}"/>
+                                                        <Text text="{item_desc_cond}" />
+                                                        <Text text="{plant}" />
+                                                        <Text text="{unit_price}" />
+                                                        <Input submit="submit" value="{quantity}"></Input>
+                                                        <Text text="{cgst_percentage}" />
+                                                        <Text text="{sgst_percentage}" />
+                                                        <Text text="{cgst_value}" />
+                                                        <Text text="{sgst_value}" />
+                                                        <Text text="{amount}" />
+                                                    </cells>
+                                                    
+                                                </ColumnListItem>
+                                            </items>
+                                        </Table>
+                                    </VBox>
+
+
+                                       
+
+                                    </uxap:blocks>
+                                </uxap:ObjectPageSubSection>
+                            </uxap:subSections>
+                        </uxap:ObjectPageSection>
+
+
+
+                        <uxap:ObjectPageSection title="Details" titleUppercase="false">
+                            <uxap:subSections>
+                                <uxap:ObjectPageSubSection title="Totals" mode="Collapsed" titleUppercase="false">
+                                    <uxap:blocks>
+                                    <VBox class="right-aligned">
+                                            <HBox>
+                                            <HBox class = "tott">
+                                                <Label id="Tot" text="Totals  " labelFor="input-a"/>
+                                                </HBox>
+                                                <HBox class = "totval" >
+                                                <Input id="input-a"  width="150px"/>
+                                                </HBox>
+
+                                                <HBox class = "totvalinr" >
+                                                <Text text="INR"/>
+                                                </HBox>
+                                            </HBox>
+                                            <HBox >
+                                            <HBox class="cgst">
+                                                <Label id="cgstid" text="CGST: " labelFor="input-b"/>
+                                                </HBox>
+                                                <HBox  class="cgstval">
+                                                <Input id="input-9"  width="150px"/>
+                                                </HBox>
+                                                
+                                                <HBox  class="cgstinr" >
+                                                <Text text="INR"/>
+                                                </HBox>
+                                                
+                                            </HBox>
+
+                                            
+                                            <HBox >
+                                            <HBox  class="sgst">
+                                            <Label id="sgstid" text="SGST" labelFor="input-c"/>
+                                            </HBox>
+                                                
+                                                <HBox class="sgstval">
+                                            <Input id="input-11"  width="150px"/>
+                                                </HBox>
+                                                
+                                                <HBox class="sgstinr">
+                                                <Text text="INR"/>
+                                                </HBox>
+                                                
+                                            </HBox>
+                                            
+                                            <HBox>	
+
+                                            <HBox class="totalvalue" >
+                                            <Label id="totinvalueid" text="Total in Value:" labelFor="input-d"/>
+                                            </HBox>
+                                                
+                                                <HBox class="totalvalueinp" >
+                                                <Input id="input-12"  width="150px"/>
+                                                </HBox>
+                                                
+
+                                                <HBox class="totalvalueinr" >
+                                                <Text text="INR"/>
+                                                </HBox>
+                                                
+                                            </HBox>
+                                            
+                                    </VBox>
+                                  
+                            
+
+                                    </uxap:blocks>
+                                </uxap:ObjectPageSubSection>
+                            </uxap:subSections>
+                        </uxap:ObjectPageSection>
+
+
+
+                        <uxap:ObjectPageSection title="Details" titleUppercase="false">
+                            <uxap:subSections>
+                                <uxap:ObjectPageSubSection title="Attachments" mode="Collapsed" titleUppercase="false">
+                                    <uxap:blocks>
+                                       	<VBox>
+                                            <upload:UploadSet id="uploadSet"
+                                            instantUpload="false"
+                                            uploadEnabled="true"
+                                            showIcons="true"
+                                            mode="None"
+                                            uploadButtonInvisible="false"
+                                            afterItemAdded="onAfterItemAdded"
+                                            uploadCompleted="onUploadCompleted"
+                                            items="{
+                                                                    path: '/Files',
+                                                                    parameters: {
+                                                                        $orderby: 'createdAt desc'
+                                                                    },
+                                                                    templateShareable: false}"
+                                                        >
+                                                        <upload:toolbar>
+                                                        </upload:toolbar>
+                                                        <upload:items>
+                                                            <upload:UploadSetItem
+                                                            id="ddd"
+                                                                fileName="{fileName}"
+                                                                mediaType="{mediaType}"
+                                                                url="{url}"
+                                                                thumbnailUrl="{
+                                                                    path: 'mediaType',
+                                                                    formatter: 'formatThumbnailUrl'
+                                                                }"
+                                                                enabledEdit="true"
+                                                                visibleEdit="true"
+                                                                visibleRemove="true"
+                                                                openPressed="onOpenPressed"
+                                                                removePressed="onRemovePressed">
+                                                                    <upload:attributes>
+                                                                    <ObjectAttribute
+                                                                    id="dd"
+                                                                        title="Uploaded By"
+                                                                        text="{createdBy}"
+                                                                        active="false"
+                                                                    />
+                                                                    <ObjectAttribute
+                                                                    id="dd22"
+                                                                        title="Uploaded on"
+                                                                        text="{createdAt}"
+                                                                        active="false"
+                                                                    />
+                                                                    <ObjectAttribute
+                                                                    id="dddw2"
+
+                                                                        title="File Type"
+                                                                        text="{mediaType}"
+                                                                        active="false"
+                                                                    />
+                                                                    <ObjectAttribute
+                                                                    id="dd22a"
+                                                                        title="File Size"
+                                                                        text="{size}"
+                                                                        active="false"
+                                                                    />
+                                                                </upload:attributes>
+                                                            </upload:UploadSetItem>	
+                                                        </upload:items>			
+                                            </upload:UploadSet>
+                                        </VBox>
+                                    </uxap:blocks>
+                                </uxap:ObjectPageSubSection>
+                            </uxap:subSections>
+                        </uxap:ObjectPageSection>
+
+
+
+                    </uxap:sections>
+                </uxap:ObjectPageLayout>
+                <footer>
+					<Bar>
+						<contentRight>
+							<Button id="bckbtn" class = "backbttn" text="Clear Screen" press="clear" />
+                            <Button id="submit" class = "backbttn" text="Submit" press="Submit" />
+							<!-- <Button text="Cancel" press="handleWizardCancel"/> -->
+						</contentRight>
+					</Bar>
+				</footer>
+
+            </Page>
+        </pages>
+    </App>
+</mvc:View>
