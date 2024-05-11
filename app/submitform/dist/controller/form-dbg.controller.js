@@ -96,12 +96,25 @@ sap.ui.define([
                 //     target: { semanticObject: "advance", action: "display" },
                 // });
 
+                debugger
+                var fname = "postcall";
+                let fname1 = this.getView().getModel().bindContext(`/${fname}(...)`);
+                fname1.setParameter('po_number', 1);
+                try {
+                    await fname1.execute();
+                } catch (error) {
+                    debugger
+                    console.log(error)
+                }
+
+
+                console.log("func completed");
+
 
 
             },
             onPress: async function (oEvent) {
                 debugger
-
                 var po_number = oEvent.oSource.oParent.oParent.mAggregations.items[0].mAggregations.items[1].mProperties.value
                 var contract_no = oEvent.oSource.oParent.oParent.mAggregations.items[1].mAggregations.items[1].mProperties.value
                 var vendor_code = oEvent.oSource.oParent.oParent.mAggregations.items[4].mAggregations.items[1].mProperties.value

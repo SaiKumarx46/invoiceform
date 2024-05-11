@@ -96,10 +96,16 @@ sap.ui.define([
                 //     target: { semanticObject: "advance", action: "display" },
                 // });
 
-                debugger
+                var po_number = this.byId("input-1").getValue()
+                var contract_no =  this.byId("input-b").getValue()
+                var vendor_code =  this.byId("input-e").getValue()
+                
                 var fname = "postcall";
                 let fname1 = this.getView().getModel().bindContext(`/${fname}(...)`);
-                fname1.setParameter('po_number', 1);
+                fname1.setParameter('po_number', po_number);
+                fname1.setParameter('contract_no', contract_no);
+                fname1.setParameter('vendor_code', vendor_code);
+
                 try {
                     await fname1.execute();
                 } catch (error) {
