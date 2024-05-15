@@ -1,0 +1,96 @@
+<!-- <core:FragmentDefinition xmlns:core="sap.ui.core" xmlns="sap.m" xmlns:macros="sap.fe.macros">
+	<VBox>
+		<Button core:require="{ handler: 'preadvanceaplist/ext/fragment/Addediteminfo'}" text="Addediteminfo" press="handler.onPress" />
+	</VBox>
+</core:FragmentDefinition> -->
+
+
+<core:FragmentDefinition xmlns:core="sap.ui.core" xmlns="sap.m" xmlns:macros="sap.fe.macros">
+	  <VBox>
+        <Table id="table" items="{
+								path: '/checkedpolineitem' 
+                                }">
+            <columns>
+                <Column width="10rem">
+                    <Text text="Item No" />
+                </Column>
+                <Column>
+                    <Text text="Item Description" />
+                </Column>
+                <Column>
+                    <Text text="Item Description Condition" />
+                </Column>
+                <Column>
+                    <Text text="Plant" />
+                </Column>
+                <Column>
+                    <Text text="Unit Price" />
+                </Column>
+                <Column>
+                    <Text text="Quantity" />
+                </Column>
+                <Column>
+                    <Text text="CGST %" />
+                </Column>
+                <Column>
+                    <Text text="SGST %" />
+                </Column>
+                <Column>
+                    <Text text="CGST Value" />
+                </Column>
+                <Column>
+                    <Text text="SGST Value" />
+                </Column>
+                <Column>
+                    <Text text="Amount"  />
+                </Column>
+            </columns>
+            <items >
+                <ColumnListItem>
+                    <cells>
+                        <Text text="{itemno}"  />
+                        <Text text="{item_desc}"/>
+                        <Text text="{item_desc_cond}" />
+                        <Text text="{plant}" />
+                        <Text text="{unit_price}" />
+                        <Text text="{quantity}" />
+                        <!-- <Input  core:require="{ handler: 'preadvanceaplist/ext/fragment/Addediteminfo'}" submit="handler.submit" value="{quantity}"></Input> -->
+                        <Text text="{cgst_percentage}" />
+                        <Text text="{sgst_percentage}" />
+                        <Text text="{cgst_value}" />
+                        <Text text="{sgst_value}" />
+                        <Text text="{amount}" />
+                    </cells>
+                     <!-- <cells>
+                        <Text text="1" />
+                        <Text text="PO1234" />
+                        <Text text="Item Description 1" />
+                        <Text text="Condition 1" />
+                        <Text text="Plant A" />
+                        <Text text="10.00" />
+                        <Text text="5" />
+                        <Text text="9.00" />
+                        <Text text="9.00" />
+                        <Text text="90.00" />
+                        <Text text="90.00" />
+                    </cells>
+                </ColumnListItem>
+                 <ColumnListItem>
+                    <cells>
+                        <Text text="2" />
+                        <Text text="PO5678" />
+                        <Text text="Item Description 2" />
+                        <Text text="Condition 2" />
+                        <Text text="Plant B" />
+                        <Text text="15.00" />
+                        <Text text="8" />
+                        <Text text="7.50" />
+                        <Text text="7.50" />
+                        <Text text="120.00" />
+                        <Text text="120.00" />
+                    </cells> -->
+                </ColumnListItem>
+            </items>
+        </Table>
+    </VBox>
+</core:FragmentDefinition>

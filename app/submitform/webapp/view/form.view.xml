@@ -21,7 +21,7 @@
      xmlns:macros="sap.fe.macros" 
     xmlns:upload="sap.m.upload">
     
-   <App id="app" >
+    <App id="app" >
         <pages>
             <Page xmlns="sap.m" title="Advance Payment Form">
                 <uxap:ObjectPageLayout id="ObjectPageLayout">
@@ -33,15 +33,15 @@
                                     	<HBox id="_IDGenHBox1">
                                              <VBox class="form-element">
                                                  <Label id="PoId" text="PO Number" labelFor="input-a"/>
-                                                 <Input id="input-1" required="true" width="200px"/>
+                                                 <Input id="input-1"  valueState="Error" valueStateText="Value is required" liveChange="ponumber" width="200px"/>
                                              </VBox>
                                             <VBox class="form-element">
                                                  <Label id="Conid" text="Contract Number" labelFor="input-b"/>
-                                                  <Input id="input-b" required="true" width="200px"/>
+                                                  <Input id="input-b"  valueState="Error" valueStateText="Value is required" liveChange="Conid" width="200px"/>
                                             </VBox>
                                              <VBox class="form-element">
                                                 <Label id="Venname" text="Vendor Name" labelFor="input-c"/>
-                                                <Input id="input-c" width="200px"/>
+                                                <Input id="input-c" width="200px" editable="false"/>
                                              </VBox>
                                             <VBox class="form-element">
                                                 <Label id="Vengst" text="Vendor GSTN" labelFor="input-d"/>
@@ -49,7 +49,7 @@
                                             </VBox>
                                             <VBox class="form-element">
                                                 <Label id="Vencode" text="Vendor Code" labelFor="input-e"/>
-                                                <Input id="input-e" required="true" width="200px"/>
+                                                <Input id="input-e"  valueState="Error" valueStateText="Value is required" liveChange="Vencode" width="200px"/>
                                             </VBox>
                                             <VBox class="go_btn_vbox">
                                             <Button id="_IDGenButton1" text="Go" press="onPress" />
@@ -102,16 +102,16 @@
                                         <HBox id="_IDGenHBox3">
 		
                                             <VBox  class="form-element">
-                                                <Label id = "advanceno" text="Advance payment number" labelFor="input-a" />
-                                                <Input id="input-4" required="true" width="200px" />
+                                                <Label id = "advceno" text="Advance payment number" labelFor="input-a" />
+                                                <Input id="advanceno" valueState="Error" valueStateText="Value is required" liveChange="advceno" width="200px" />
                                             </VBox>
                                             <VBox  class="form-element">
-                                                <Label id = "advnacedate" text="Advance payment date" labelFor="input-b" />
-                                                <Input id="input-5" required="true" width="200px" />
+                                                <Label id = "advnadate" text="Advance payment date" labelFor="input-b" />
+                                                <DatePicker id="advancedate"   liveChange="advnadate" width="200px" ></DatePicker>
                                             </VBox>		
                                             <VBox  class="form-element">
-                                                <Label id = "advancevalue" text="Adavnce payment value -INR" labelFor="input-c" />
-                                                <Input id="input-6" required="true" width="200px" />
+                                                <Label id = "advevalue" text="Adavnce payment value -INR" labelFor="input-c" />
+                                                <Input id="advancevalue" width="200px" liveChange="advancevaluechange"/>
                                             </VBox>
                                         
                                             <!-- <Button core:require="{ handler: 'advancedpayment/ext/fragment/Payment'}" text="Payment" press="handler.onPress" /> -->
@@ -163,7 +163,10 @@
                                                 <Text text="SGST Value" />
                                             </Column>
                                             <Column>
-                                                <Text text="Amount" visible="false"/>
+                                                <Text text="Amount" visible="false" />
+                                            </Column>
+                                            <Column>
+                                                <Text text="Checked" visible="false" />
                                             </Column>
                                         </columns>
                                         <items>
@@ -174,11 +177,13 @@
                                                     <Text text="{item_desc_cond}" />
                                                     <Text text="{plant}" />
                                                     <Text text="{unit_price}" />
-                                                    <Text text="{quantity}" />
+                                                    <Text text="{quantity_static}" />
                                                     <Text text="{cgst_percentage}" />
                                                     <Text text="{sgst_percentage}" />
-                                                    <Text text="{cgst_value}" />
-                                                    <Text text="{sgst_value}" />
+                                                    <Text text="{cgst_value_static}" />
+                                                    <Text text="{sgst_value_static}" />
+                                                    <Text text="{amount_value_static}" visible="false" />
+                                                    <Text text="{checked}" visible="false" />
                                                 </cells>
                                             </ColumnListItem>
                                         </items>
@@ -219,7 +224,7 @@
                                                     <Text text="Unit Price" />
                                                 </Column>
                                                 <Column>
-                                                    <Text text="Quantity" />
+                                                    <Text text="Quantity"/>
                                                 </Column>
                                                 <Column>
                                                     <Text text="CGST %" />
@@ -245,7 +250,7 @@
                                                         <Text text="{item_desc_cond}" />
                                                         <Text text="{plant}" />
                                                         <Text text="{unit_price}" />
-                                                        <Input submit="submit" value="{quantity}"></Input>
+                                                        <Input submit="submit" value="{quantity}" id="quan"></Input>
                                                         <Text text="{cgst_percentage}" />
                                                         <Text text="{sgst_percentage}" />
                                                         <Text text="{cgst_value}" />

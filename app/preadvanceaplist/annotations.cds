@@ -75,19 +75,12 @@ annotate service.poheader with @(
             },
         ],
     },
-    UI.Facets : [
-        {
-            $Type : 'UI.ReferenceFacet',
-            ID : 'GeneratedFacet1',
-            Label : 'General Information',
-            Target : '@UI.FieldGroup#GeneratedGroup',
-        },
-    ],
+    UI.Facets : [],
     UI.LineItem : [
          {
             $Type : 'UI.DataField',
             Value : po_to_invoice.advance_payment_no,
-            Label : 'advance_payment_no',
+            Label : 'Advance Payment No',
         },
         {
             $Type : 'UI.DataField',
@@ -96,45 +89,44 @@ annotate service.poheader with @(
         },
         {
             $Type : 'UI.DataField',
-            Value : purchase_doc,
-            Label : 'purchase_doc',
+            Value : registration_id,
+            Label : 'Registration Id',
         },
         {
             $Type : 'UI.DataField',
-            Label : 'vendor_name',
+            Value : po_number,
+            Label : 'Purchasing Doc.',
+        },
+        {
+            $Type : 'UI.DataField',
+            Label : 'Vendor Name',
             Value : vendor_name,
         },
         {
             $Type : 'UI.DataField',
-            Value : document_date,
-            Label : 'document_date',
+            Value : creation_date,
+            Label : 'Document Date ',
         },
         {
             $Type : 'UI.DataField',
             Value : po_to_invoice.advance_payment_value,
-            Label : 'advance_payment_value',
+            Label : 'Advance Payment Val',
         },
         {
             $Type : 'UI.DataField',
             Value : company_code,
-            Label : 'company_code',
+            Label : 'Company Code',
         },
         {
             $Type : 'UI.DataField',
             Value : purchasing_org,
-            Label : 'purchasing_org',
+            Label : 'Purchasing Org',
         },
         {
             $Type : 'UI.DataField',
             Value : comment,
-            Label : 'comment',
+            Label : 'Comment',
         },
-        {
-            $Type : 'UI.DataField',
-            Value : registration_id,
-            Label : 'registration_id',
-        },
-       
         {
             $Type : 'UI.DataFieldForIntentBasedNavigation',
             SemanticObject : 'submitform',

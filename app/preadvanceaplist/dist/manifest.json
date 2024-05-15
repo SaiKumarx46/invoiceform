@@ -56,14 +56,15 @@
         }
     },
     "sap.ui5": {
-        "flexEnabled": true,
+        "flexEnabled": false,
         "dependencies": {
             "minUI5Version": "1.123.1",
             "libs": {
                 "sap.m": {},
                 "sap.ui.core": {},
                 "sap.ushell": {},
-                "sap.fe.templates": {}
+                "sap.fe.templates": {},
+                "sap.f": {}
             }
         },
         "contentDensities": {
@@ -93,7 +94,11 @@
             }
         },
         "resources": {
-            "css": []
+            "css": [
+                {
+                    "uri": "style/style.css"
+                }
+            ]
         },
         "routing": {
             "routes": [
@@ -115,8 +120,7 @@
                     "name": "sap.fe.templates.ListReport",
                     "options": {
                         "settings": {
-                            "contextPath": "/poheader",
-                            "variantManagement": "Page",
+                            "entitySet": "poheader",
                             "navigation": {
                                 "poheader": {
                                     "detail": {
@@ -126,8 +130,37 @@
                             },
                             "controlConfiguration": {
                                 "@com.sap.vocabularies.UI.v1.LineItem": {
-                                    "tableSettings": {
-                                        "type": "ResponsiveTable"
+                                    "columns": {
+                                        "DataField::po_to_invoice::advance_payment_no": {
+                                            "width": "20%"
+                                        },
+                                        "DataField::status": {
+                                            "width": "20%"
+                                        },
+                                        "DataField::registration_id": {
+                                            "width": "20%"
+                                        },
+                                        "DataField::comment": {
+                                            "width": "10%"
+                                        },
+                                        "DataField::po_number": {
+                                            "width": "20%"
+                                        },
+                                        "DataField::vendor_name": {
+                                            "width": "20%"
+                                        },
+                                        "DataField::creation_date": {
+                                            "width": "20%"
+                                        },
+                                        "DataField::po_to_invoice::advance_payment_value": {
+                                            "width": "20%"
+                                        },
+                                        "DataField::company_code": {
+                                            "width": "20%"
+                                        },
+                                        "DataField::purchasing_org": {
+                                            "width": "20%"
+                                        }
                                     }
                                 }
                             }
@@ -140,9 +173,59 @@
                     "name": "sap.fe.templates.ObjectPage",
                     "options": {
                         "settings": {
-                            "editableHeaderContent": false,
-                            "contextPath": "/poheader",
-                            "navigation": {}
+                            "entitySet": "poheader",
+                            "navigation": {},
+                            "content": {
+                                "body": {
+                                    "sections": {
+                                        "LineItems": {
+                                            "name": "preadvanceaplist.ext.fragment.LineItems",
+                                            "position": {
+                                                "anchor": "Payment",
+                                                "placement": "Before"
+                                            },
+                                            "type": "XMLFragment",
+                                            "title": "PO LineItems"
+                                        },
+                                        "Addediteminfo": {
+                                            "name": "preadvanceaplist.ext.fragment.Addediteminfo",
+                                            "position": {
+                                                "anchor": "PoLineitems",
+                                                "placement": "After"
+                                            },
+                                            "type": "XMLFragment",
+                                            "title": "Added Item Information"
+                                        },
+                                        "Attachment": {
+                                            "name": "preadvanceaplist.ext.fragment.Attachment",
+                                            "position": {
+                                                "anchor": "Addediteminfo",
+                                                "placement": "After"
+                                            },
+                                            "type": "XMLFragment",
+                                            "title": "Attachments"
+                                        },
+                                        "Payment": {
+                                            "name": "preadvanceaplist.ext.fragment.Payment",
+                                            "position": {
+                                                "anchor": "Addediteminfo",
+                                                "placement": "Before"
+                                            },
+                                            "type": "XMLFragment",
+                                            "title": "Payment Information"
+                                        },
+                                        "PoLineitems": {
+                                            "name": "preadvanceaplist.ext.fragment.PoLineitems",
+                                            "position": {
+                                                "anchor": "Payment",
+                                                "placement": "After"
+                                            },
+                                            "type": "XMLFragment",
+                                            "title": "Advance Payment Line Items"
+                                        }
+                                    }
+                                }
+                            }
                         }
                     }
                 }

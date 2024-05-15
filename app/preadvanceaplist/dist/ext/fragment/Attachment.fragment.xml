@@ -1,0 +1,85 @@
+<!-- <core:FragmentDefinition xmlns:core="sap.ui.core" xmlns="sap.m" xmlns:macros="sap.fe.macros">
+	<VBox>
+		<Button core:require="{ handler: 'preadvanceaplist/ext/fragment/Attachment'}" text="Attachment" press="handler.onPress" />
+	</VBox>
+</core:FragmentDefinition> -->
+
+
+<core:FragmentDefinition xmlns:core="sap.ui.core" xmlns="sap.m" xmlns:macros="sap.fe.macros"  displayBlock="true"
+xmlns:mvc="sap.ui.core.mvc" xmlns:upload="sap.m.upload">
+	<VBox>
+		<!-- <Button core:require="{ handler: 'advancedpayment/ext/fragment/Attachment'}" text="Attachment" press="handler.onPress" /> -->
+		<upload:UploadSet id="uploadSet"
+		core:require="{ handler:  'preadvanceaplist/ext/fragment/Attachment'}"
+		instantUpload="false"
+		uploadEnabled="false"
+		showIcons="false"
+		uploadButtonInvisible="false"
+		afterItemAdded="handler.onAfterItemAdded"
+		uploadCompleted="handler.onUploadCompleted"
+		items="{
+								path: '/Files',
+								parameters: {
+									$orderby: 'createdAt desc'
+								},
+								templateShareable: false}"
+					>
+					<upload:toolbar>
+					</upload:toolbar>
+					<upload:items>
+						<upload:UploadSetItem
+						id="ddd"
+							fileName="{fileName}"
+							mediaType="{mediaType}"
+							url="{url}"
+							thumbnailUrl="{
+								path: 'mediaType',
+								formatter: 'handler.formatThumbnailUrl'
+							}"
+							enabledEdit="false"
+							visibleEdit="false"
+							visibleRemove="false"
+							openPressed="handler.onOpenPressed"
+							removePressed="handler.onRemovePressed">
+								<upload:attributes>
+								<ObjectAttribute
+								id="dd"
+									title="Uploaded By"
+									text="{createdBy}"
+									active="false"
+								/>
+								<ObjectAttribute
+								id="dd22"
+									title="Uploaded on"
+									text="{createdAt}"
+									active="false"
+								/>
+								<ObjectAttribute
+								id="dddw2"
+
+									title="File Type"
+									text="{mediaType}"
+									active="false"
+								/>
+								<ObjectAttribute
+								id="dd22a"
+									title="File Size"
+									text="{size}"
+									active="false"
+								/>
+							</upload:attributes>
+						</upload:UploadSetItem>	
+					</upload:items>			
+		</upload:UploadSet>
+	</VBox>
+</core:FragmentDefinition>
+
+
+
+
+
+					
+					
+					
+				
+					

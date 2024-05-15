@@ -20,7 +20,7 @@
 
 .tott{
     margin-top: 7px;
-    margin-right: 7px;
+    margin-right: 10px;
 }
 
 .totval{
@@ -34,11 +34,11 @@
 
 .cgst{
     margin-top: 7px;
-    margin-right: 6px;
+    margin-right: 7px;
 }
 
 .cgstval{
-    margin-left: 40px;
+    margin-left: 48px;
 }
 
 .cgstinr{
@@ -48,7 +48,7 @@
 
 .sgst{
     margin-top: 7px;
-    margin-right: 7px;
+    margin-right: 10px;
 }
 
 .sgstval{
@@ -62,6 +62,7 @@
 
 .totalvalue{
     margin-top: 7px;
+    margin-right: 7px;
 }
 
 .totalvalueinr{

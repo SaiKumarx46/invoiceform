@@ -1,0 +1,34 @@
+<!-- <core:FragmentDefinition xmlns:core="sap.ui.core" xmlns="sap.m" xmlns:macros="sap.fe.macros">
+	<VBox>
+		<Button core:require="{ handler: 'preadvanceaplist/ext/fragment/LineItems'}" text="LineItems" press="handler.onPress" />
+	</VBox>
+</core:FragmentDefinition> -->
+
+<core:FragmentDefinition xmlns:core="sap.ui.core" xmlns="sap.m" xmlns:macros="sap.fe.macros">
+	<HBox id="_IDGenHBox1" >
+    <VBox class="form-element">
+        <Label id="PoId" text="PO Number" labelFor="input-a"/>
+        <Input editable="false" id="input-a" required="true" width="200px"/>
+    </VBox>
+    <VBox class="form-element">
+        <Label id="Conid" text="Contact No" labelFor="input-b"/>
+        <Input editable="false" id="input-b" required="true" width="200px"/>
+    </VBox>
+    <VBox class="form-element">
+        <Label id="Venname" text="Vendor Name" labelFor="input-c"/>
+        <Input editable="false" id="input-c" width="200px"/>
+    </VBox>
+    <VBox class="form-element">
+        <Label id="Vengst" text="Vendor GSTN" labelFor="input-d"/>
+        <Input editable="false" id="input-d" width="200px"/>
+    </VBox>
+    <VBox class="form-element">
+        <Label id="Vencode" text="Vendor Code" labelFor="input-e"/>
+        <Input editable="false" id="input-e" required="true" width="200px"/>
+    </VBox>
+    <!-- <VBox class="go_btn_vbox">
+    <Button id="_IDGenButton1" core:require="{ handler: 'advancedpayment/ext/fragment/LineItems'}" text="Go" press="handler.onPress" />
+    </VBox> -->
+</HBox>
+
+</core:FragmentDefinition>
