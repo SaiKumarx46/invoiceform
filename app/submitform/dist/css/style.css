@@ -3,6 +3,12 @@
 .form-element {
     margin-right: 10px; /* Adjust the margin as needed */
 }
+#container-submitform---form--headtitle-title {
+    margin-left: 30px; /* Adjust the margin as needed */
+}
+#application-submitform-display-component---form--headtitle-title {
+    margin-left: 30px; /* Adjust the margin as needed */
+}
 
 .go_btn_vbox{
     margin-top: auto;

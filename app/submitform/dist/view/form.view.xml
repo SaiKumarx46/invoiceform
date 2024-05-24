@@ -23,7 +23,7 @@
     
     <App id="app" >
         <pages>
-            <Page xmlns="sap.m" title="Advance Payment Form">
+            <Page xmlns="sap.m" id="headtitle" title="Advance Payment Form">
                 <uxap:ObjectPageLayout id="ObjectPageLayout">
                     <uxap:sections>
                         <uxap:ObjectPageSection title="PO Line Items" titleUppercase="false">
@@ -33,23 +33,54 @@
                                     	<HBox id="_IDGenHBox1">
                                              <VBox class="form-element">
                                                  <Label id="PoId" text="PO Number" labelFor="input-a"/>
-                                                 <Input id="input-1"  valueState="Error" valueStateText="Value is required" liveChange="ponumber" width="200px"/>
+                                                 <!-- <Input id="input-1" valueState="Error" valueStateText="Value is required" liveChange="ponumber" showValueHelp="true" width="170px"/> -->
+                                                 	<!-- <Input
+                                                        id="input-1"
+                                                        placeholder="Enter Po Number"
+                                                        valueState="Error" 
+                                                        valueStateText="Value is required" 
+                                                        liveChange="ponumber"
+                                                        change="onSelectionChange"
+                                                        showSuggestion="true"
+                                                        suggest="onSuggest"
+                                                        suggestionItems="{/valuehelp}" >
+                                                        <suggestionItems>
+                                                            <core:Item text="{po_number} | {contract_number}" />
+                                                        </suggestionItems>
+                                                    </Input> -->
+                                                    <ComboBox
+                                                        id="input-1"
+                                                        showSecondaryValues="true"
+                                                        selectionChange="onSelectionChange"
+                                                        items="{
+                                                            path: '/valuehelp',
+                                                            sorter: { path: 'text' }
+                                                        }">
+                                                        <core:ListItem key="{key}" text="{po_number}" additionalText="{contract_number}" />
+                                                    </ComboBox>
+                                                
                                              </VBox>
                                             <VBox class="form-element">
                                                  <Label id="Conid" text="Contract Number" labelFor="input-b"/>
-                                                  <Input id="input-b"  valueState="Error" valueStateText="Value is required" liveChange="Conid" width="200px"/>
+                                                  <Input id="input-b" editable="false" width="170px"/>
+                                                  <!-- <Input id="input-b"  valueState="Error" valueStateText="Value is required" liveChange="Conid" width="170px"/> -->
                                             </VBox>
                                              <VBox class="form-element">
                                                 <Label id="Venname" text="Vendor Name" labelFor="input-c"/>
-                                                <Input id="input-c" width="200px" editable="false"/>
+                                                <Input id="input-c" width="170px" editable="false"/>
                                              </VBox>
                                             <VBox class="form-element">
                                                 <Label id="Vengst" text="Vendor GSTN" labelFor="input-d"/>
-                                                <Input id="input-d" width="200px"/>
+                                                <Input id="input-d" editable="false" width="170px"/>
                                             </VBox>
                                             <VBox class="form-element">
                                                 <Label id="Vencode" text="Vendor Code" labelFor="input-e"/>
-                                                <Input id="input-e"  valueState="Error" valueStateText="Value is required" liveChange="Vencode" width="200px"/>
+                                                <Input id="input-e"  editable="false" value="0000001060" width="170px"/>
+                                            </VBox>
+                                              <VBox class="form-element">
+                                                <Label id="mail" text="Approver Mail" labelFor="input-f"/>
+                                                <Input id="input-f"   width="170px"/>
+                                                
                                             </VBox>
                                             <VBox class="go_btn_vbox">
                                             <Button id="_IDGenButton1" text="Go" press="onPress" />
@@ -102,15 +133,15 @@
                                         <HBox id="_IDGenHBox3">
 		
                                             <VBox  class="form-element">
-                                                <Label id = "advceno" text="Advance payment number" labelFor="input-a" />
+                                                <Label id = "advceno" text="Advance Payment Number" labelFor="input-a" />
                                                 <Input id="advanceno" valueState="Error" valueStateText="Value is required" liveChange="advceno" width="200px" />
                                             </VBox>
                                             <VBox  class="form-element">
-                                                <Label id = "advnadate" text="Advance payment date" labelFor="input-b" />
+                                                <Label id = "advnadate" text="Advance Payment Date" labelFor="input-b" />
                                                 <DatePicker id="advancedate"   liveChange="advnadate" width="200px" ></DatePicker>
                                             </VBox>		
                                             <VBox  class="form-element">
-                                                <Label id = "advevalue" text="Adavnce payment value -INR" labelFor="input-c" />
+                                                <Label id = "advevalue" text="Adavnce Payment Value -INR" labelFor="input-c" />
                                                 <Input id="advancevalue" width="200px" liveChange="advancevaluechange"/>
                                             </VBox>
                                         
@@ -184,6 +215,7 @@
                                                     <Text text="{sgst_value_static}" />
                                                     <Text text="{amount_value_static}" visible="false" />
                                                     <Text text="{checked}" visible="false" />
+                                                    <Text text="{amount}" visible="false" />
                                                 </cells>
                                             </ColumnListItem>
                                         </items>
@@ -421,6 +453,25 @@
                             </uxap:subSections>
                         </uxap:ObjectPageSection>
 
+                         <uxap:ObjectPageSection title="Details" titleUppercase="false">
+                            <uxap:subSections>
+                                <uxap:ObjectPageSubSection title="Comments" mode="Collapsed" titleUppercase="false">
+                                    <uxap:blocks>
+                                   
+                                    <VBox id= "vv" class = "commentvbox" width="100%">
+                                        <!-- <HBox id="buttonContainer" alignItems="End" justifyContent="End" width="100%">
+                                            <Button id="rev_comm" class = "commentbtn" core:require="{ handler: 'preadvanceaplist/ext/fragment/Comments'}" text="Comments" press="handler.onPress" icon="sap-icon://comment" />
+                                        </HBox> -->
+                                        <TextArea id="ta" rows="8" width="100%" placeholder="Write your comment" editable="true" class="commenthbox" />
+
+                                    </VBox>
+                            
+
+                                    </uxap:blocks>
+                                </uxap:ObjectPageSubSection>
+                            </uxap:subSections>
+                        </uxap:ObjectPageSection>
+
 
 
                     </uxap:sections>
@@ -429,7 +480,7 @@
 					<Bar>
 						<contentRight>
 							<Button id="bckbtn" class = "backbttn" text="Clear Screen" press="clear" />
-                            <Button id="submit" class = "backbttn" text="Submit" press="Submit" />
+                            <Button id="submit" class = "backbttn" text="Submit" press="Submit" visible="false"/>
 							<!-- <Button text="Cancel" press="handleWizardCancel"/> -->
 						</contentRight>
 					</Bar>

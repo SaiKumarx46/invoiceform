@@ -64,6 +64,7 @@
         "sap.ui.core": {},
         "sap.ushell": {},
         "sap.fe.templates": {},
+        "sap.suite.ui.commons": {},
         "sap.f": {}
       }
     },
@@ -127,6 +128,42 @@
                     "route": "poheaderObjectPage"
                   }
                 }
+              },
+              "controlConfiguration": {
+                "@com.sap.vocabularies.UI.v1.LineItem": {
+                  "columns": {
+                    "DataField::po_to_invoice::advance_payment_no": {
+                      "width": "150px"
+                    },
+                    "DataField::status": {
+                      "width": "100px"
+                    },
+                    "DataField::comment": {
+                      "width": "10%"
+                    },
+                    "DataField::purchasing_org": {
+                      "width": "150px"
+                    },
+                    "DataField::registration_id": {
+                      "width": "120px"
+                    },
+                    "DataField::po_number": {
+                      "width": "120px"
+                    },
+                    "DataField::vendor_name": {
+                      "width": "120px"
+                    },
+                    "DataField::creation_date": {
+                      "width": "120px"
+                    },
+                    "DataField::po_to_invoice::advance_payment_value": {
+                      "width": "120px"
+                    },
+                    "DataField::company_code": {
+                      "width": "120px"
+                    }
+                  }
+                }
               }
             }
           }
@@ -138,8 +175,77 @@
           "options": {
             "settings": {
               "entitySet": "poheader",
-              "navigation": {}
+              "navigation": {},
+              "content": {
+                "body": {
+                  "sections": {
+                    "Addediteminfo": {
+                      "template": "preadvanceaplist.ext.fragment.Addediteminfo",
+                      "title": "Added Item Information",
+                      "type": "XMLFragment",
+                      "position": {
+                        "anchor": "Attachment",
+                        "placement": "Before"
+                      }
+                    },
+                    "Attachment": {
+                      "template": "preadvanceaplist.ext.fragment.Attachment",
+                      "position": {
+                        "placement": "After",
+                        "anchor": "Addediteminfo"
+                      },
+                      "title": "Attachments",
+                      "type": "XMLFragment"
+                    },
+                    "LineItems": {
+                      "template": "preadvanceaplist.ext.fragment.LineItems",
+                      "title": "PO Line Items",
+                      "type": "XMLFragment"
+                    },
+                    "Payment": {
+                      "template": "preadvanceaplist.ext.fragment.Payment",
+                      "position": {
+                        "placement": "After",
+                        "anchor": "LineItems"
+                      },
+                      "type": "XMLFragment",
+                      "title": "Payment Information"
+                    },
+                    "PoLineitems": {
+                      "template": "preadvanceaplist.ext.fragment.PoLineitems",
+                      "position": {
+                        "placement": "After",
+                        "anchor": "Payment"
+                      },
+                      "title": "Advance Payment Line Items",
+                      "type": "XMLFragment"
+                    },
+                    "Comments": {
+                      "template": "preadvanceaplist.ext.fragment.Comments",
+                      "position": {
+                        "placement": "After",
+                        "anchor": "Attachment"
+                      },
+                      "title": "Comments",
+                      "type": "XMLFragment"
+                    }
+                  }
+                }
+              }
             }
+          }
+        }
+      },
+      "config": {}
+    },
+    "extends": {
+      "extensions": {
+        "sap.ui.controllerExtensions": {
+          "sap.fe.templates.ListReport.ListReportController": {
+            "controllerName": "preadvanceaplist.ext.controller.Listreportpage"
+          },
+          "sap.fe.templates.ObjectPage.ObjectPageController": {
+            "controllerName": "preadvanceaplist.ext.controller.Objectpage"
           }
         }
       }

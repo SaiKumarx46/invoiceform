@@ -6,7 +6,7 @@
 
 <core:FragmentDefinition xmlns:core="sap.ui.core" xmlns="sap.m" xmlns:macros="sap.fe.macros">
 	  <VBox>
-        <Table id="table" core:require="{ handler: 'preadvanceaplist/ext/fragment/PoLineitems'}" selectionChange="handler.onRowSelected" mode="MultiSelect"
+        <Table id="table" core:require="{ handler: 'preadvanceaplist/ext/fragment/PoLineitems'}" 
             items="{
 					path: '/polineitem'}">
             <columns>

@@ -2,12 +2,56 @@ const cds = require('@sap/cds');
 const { parseArgs } = require('util');
 const axios = require('axios');
 const { getAxiosConfigWithDefaults } = require('@sap-cloud-sdk/http-client/dist/http-client');
+const { json } = require('express/lib/response');
 module.exports = cds.service.impl(async function () {
+
   
-    let {  polineitem,poheader,invoice,checkedpolineitem} = this.entities;
+    let {  checkeditem,valuehelp,Files,polineitem,poheader,invoice,comment,checkedpolineitem} = this.entities;
     //     bank,
     //     account,
     //     customer
+
+    this.before('CREATE', 'Files', req => {
+      console.log('Create called')
+      console.log(JSON.stringify(req.data))
+      req.data.url = `https://b2a369b5trial-dev-invoiceform-srv.cfapps.us10-001.hana.ondemand.com/odata/v4/my/Files(${req.data.fileId})/content`
+  })
+
+  this.on('getcallcomment', async (req) => {
+    
+    debugger
+    
+    let commentshistory = await SELECT.from(comment).where({ registration_id: req.data.registration_id });
+    return JSON.stringify(commentshistory)
+
+
+  });
+  this.on('UPDATE', 'poheader', async (req, next) => { 
+    debugger
+
+    console.log("updaete",req)
+    console.log("fdgsd",req.data)
+    var status = req.data.comment;
+    console.log("STATUS",status);
+
+    let comm =  await INSERT.into(comment).entries({ 
+            
+      registration_id :  req.data.registration_id ,
+      textArea : req.data.status
+
+      });
+    
+    if(status == "1")
+    {
+      let approve = await UPDATE(poheader).set({ status: 'Approved', status_criticality: 3 }).where({  registration_id: req.data.registration_id  });
+      console.log("approve",approve)
+    }
+    else
+    {
+      let reject = await UPDATE(poheader).set({ status: 'Rejected', status_criticality: 1 }).where({  registration_id: req.data.registration_id  });
+      console.log("reject",reject)
+    }
+  });
     
     this.on('postcall', async (req) => 
     {
@@ -156,9 +200,10 @@ module.exports = cds.service.impl(async function () {
             registration_id : destt.regId,
             vendor_code : req.data.vendor_code,
             vendor_name : destt.vendorName,
+            approver_mail : req.data.email,
             status:"Submitted",
             status_criticality:2,
-            vendor_gstin : destt.vendorGstin,
+            vendor_gstin : req.data.vendorGstin,
             company_code: destt.companyCode,
             purchasing_org : destt.purchasingOrg,
             creation_date : formattedDate
@@ -168,8 +213,91 @@ module.exports = cds.service.impl(async function () {
 
             console.log("insertheader",insertheader)
 
+            let comm =  await INSERT.into(comment).entries({ 
+            
+              registration_id : destt.regId,
+              textArea : req.data.textArea
+  
+              });
 
+              console.log("comm",comm)
+
+
+          
+
+           
+
+            let checkedpoline_items = await SELECT.from(polineitem).where({po_number: req.data.po_number , checked :'true' });
+
+            console.log("checkedpoline_items",checkedpoline_items)
+
+            for(var i = 0 ;i < checkedpoline_items.length ; i++){
+           await INSERT.into(checkeditem).entries({ 
+              itemno1: checkedpoline_items[i].itemno,
+              registration_id1 : destt.regId,
+                item_desc1: checkedpoline_items[i].item_desc,
+                plant1 :checkedpoline_items[i].plant,
+                unit_price1 : checkedpoline_items[i].unit_price,
+                quantity1 : checkedpoline_items[i].quantity, 
+                quantity_static1 : checkedpoline_items[i].quantity_static,
+                amount1 : checkedpoline_items[i].amount,
+                amount_value_static1 : checkedpoline_items[i].amount_value_static,
+                cgst_percentage1 :checkedpoline_items[i].cgst_percentage,
+                sgst_percentage1 :checkedpoline_items[i].sgst_percentage,
+                // cgst_value :parseFloat(destt.advancePaymentLineItemsSet[i].cgstValue),
+                // sgst_value :parseFloat(destt.advancePaymentLineItemsSet[i].sgstValue),
+                cgst_value1 :checkedpoline_items[i].cgst_value,
+                sgst_value1 :checkedpoline_items[i].sgst_value,
+                cgst_value_static1 : checkedpoline_items[i].cgst_value_static,
+                sgst_value_static1 : checkedpoline_items[i].sgst_value_static,
+                vendor_code1 : checkedpoline_items[i].vendor_code,
+                });
+    
+            
+            }
+
+          
+
+            let files1 = await SELECT.from(Files).where({po_number: req.data.po_number });
+
+            console.log("files1",files1)
+
+            // for(var i = 0 ;i < files1.length ; i++){
+            //   await INSERT.into(files1).entries({ 
+            //      registration_id : destt.regId,
+            //      po_number : destt.poNo,
+            //      content : files1[i].content,
+            //      mediaType : files1[i].mediaType,
+            //      fileName : files1[i].fileName,
+            //      size : files1[i].size,
+            //      url : files1[i].url,
+            //        });
+       
+                   
+              //  }
+
+                      
+            let checkfalse  = await UPDATE(polineitem).set ({checked  : 'false'});
+
+        console.log("checkfalse",checkfalse)
         console.log("desttttt",destt)
+        let updatefile  = await UPDATE(Files).set ({registration_id : destt.regId}).where({po_number:destt.poNo,registration_id :'test'});
+            
+
+        var bodyy = JSON.parse(JSON.stringify({
+          "definitionId": process.env.definitionId,
+          "context": {
+            "po_number": `${req.data.po_number}`,
+            "registration_id":  `${destt.regId}`,
+            "approver_mail": `${req.data.email}`
+        }
+
+
+
+      }));
+      console.log(bodyy);
+
+      let response11 = await BPA.post("/workflow/rest/v1/workflow-instances", bodyy);
 
         return destt.regId
 
@@ -180,7 +308,7 @@ module.exports = cds.service.impl(async function () {
     {
         //
 
-        
+        debugger
         var po = req.data.po_number
         var contract = req.data.contract_no
         var vendor = req.data.vendor_code
@@ -243,7 +371,7 @@ module.exports = cds.service.impl(async function () {
 
         console.log("destt.vendorName",destt.vendorName)
 
-        return destt.vendorName
+        return destt
 
     
 
@@ -313,6 +441,7 @@ module.exports = cds.service.impl(async function () {
         
          let insert_invoice =  await INSERT.into(invoice).entries({ 
           advance_payment_no : req.data.advancePayNo,
+          registration_id : req.data.regid,
           po_number :req.data.ponumber ,
           advance_payment_date : req.data.advancePayDate,
           advance_payment_value: req.data.advancePayValue
@@ -322,6 +451,37 @@ module.exports = cds.service.impl(async function () {
 
           console.log("insert_invoice",insert_invoice)
         
+       });
+
+       this.on('getcallforobj', async (req) => 
+       {
+           debugger
+           let pohead = await SELECT.from(poheader).where({registration_id : req.data.registterid});
+
+           let advapay = await SELECT.from(invoice).where({registration_id : req.data.registterid});
+
+          
+            return JSON.stringify({
+              pohead:pohead,
+              advapay:advapay
+            });
+            
+       });
+       this.on('valuehelp1', async (req) => 
+       {
+           debugger
+           let val = await SELECT.from(valuehelp).where({vendor_code : req.data.vencode});
+    
+           return JSON.stringify(val);
+            
+       });
+
+
+       this.on('fm3', async (req) => 
+       {
+           debugger
+          let table = await SELECT.from(polineitem).where({po_number: req.data.poNum , itemno:  req.data.itemId });
+          return JSON.stringify(table); 
        });
     
  });

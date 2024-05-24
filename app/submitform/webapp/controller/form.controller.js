@@ -41,23 +41,87 @@
 
 
 sap.ui.define([
-    "sap/ui/core/mvc/Controller"
+    "sap/ui/core/mvc/Controller",
+    "sap/ui/model/Filter",
+    "sap/ui/model/FilterOperator",
+    "sap/ui/model/json/JSONModel"
 ],
     /**
      * @param {typeof sap.ui.core.mvc.Controller} Controller
      */
-    function (Controller) {
+    function (Controller, Filter, FilterOperator, JSONModel) {
         "use strict";
         var total_amount = 0;
         var total_Sgst = 0;
         var total_Cgst = 0;
+        var pokey;
         return Controller.extend("submitform.controller.form", {
-            onInit: function () {
+            onInit: async function () {
+                   
+
+              
 
             },
-            onBeforeRendering: function (oEvent) {
-                //
+
+
+            onSuggest: function (oEvent) {
                 debugger
+                var sTerm = oEvent.getParameter("suggestValue");
+                var aFilters = [];
+                if (sTerm) {
+                    var oFilterName = new Filter("po_number", FilterOperator.Contains, sTerm);
+                    var oFilterDescription = new Filter("contract_number", FilterOperator.Contains, sTerm);
+                    aFilters.push(new Filter({
+                        filters: [oFilterName, oFilterDescription],
+                        and: false
+                    }));
+                }
+    
+                oEvent.getSource().getBinding("suggestionItems").filter(aFilters);
+            },
+    
+            onSelectionChange: function (oEvent) {
+                debugger
+                var oSelectedItem = oEvent.getParameter("selectedItem");
+                if (oSelectedItem) {
+                    this.byId("input-1").setValue(oSelectedItem.mProperties.Text);
+                    this.byId("input-b").setValue(oSelectedItem.mProperties.additionalText);
+                    
+                }
+                
+
+                        
+            },
+    
+    
+            onBeforeRendering: async function (oEvent) {
+                debugger
+                    var vencode = this.byId("input-e").mProperties.value;
+					let funcname = "valuehelp1";
+                    var oFunc = this.getView().getModel().bindContext(`/${funcname}(...)`);
+                    oFunc.setParameter('vencode', vencode);
+                    await oFunc.execute();
+                    let context = oFunc.getBoundContext();
+                    let getdata = context.getValue();
+                    let res = getdata.value;
+                    let result = JSON.parse(res)
+                    
+                    let valuehe = result.map(item => ({
+                        po_number: `${item.po_number}`,
+                        contract_number:`${item.contract_number}`,
+                        
+                        
+                    }));
+
+
+        
+                    var val = {
+                    "valuehelp": valuehe
+                };
+    
+                var oModel = new JSONModel(val);
+                this.getView().setModel(oModel);
+
                 var id = this.byId("input-1").mProperties.value;
                 //FILTER FOR LINE ITEMS
                 var path = this.byId("table").mBindingInfos.items.binding;
@@ -68,18 +132,26 @@ sap.ui.define([
                         value1: ''
                     })
                 );
+                var path2 = this.byId("helo").mBindingInfos.items.binding;
+                path2.filter(
+                    new sap.ui.model.Filter({
+                        path: "po_number",
+                        operator: sap.ui.model.FilterOperator.EQ,
+                        value1: ''
+                    })
+                );
 
 
                 //FILTER FOR ADDED ITEM INFO
-            //     var path1 = this.byId("helo").mBindingInfos.items.binding;
+                var path1 = this.byId("uploadSet").mBindingInfos.items.binding;
 
-            //     path1.filter(
-            //       new sap.ui.model.Filter({
-            //           path: "po_number",
-            //           operator: sap.ui.model.FilterOperator.EQ,
-            //           value1: '3000000038'
-            //       })
-            //   );
+                path1.filter(
+                  new sap.ui.model.Filter({
+                      path: "registration_id",
+                      operator: sap.ui.model.FilterOperator.EQ,
+                      value1: 'test'
+                  })
+              );
 
 
                 
@@ -116,30 +188,30 @@ sap.ui.define([
                     this.byId("input-1").setValueState("None");
                     this.byId("input-1").setValueStateText("");
                    
-
                 }
-            },
-
-            Conid: async function (oEvent) {
-                debugger
-                var Conid = this.byId("input-b").getValue()
-                if(Conid){
-                    this.byId("input-b").setValueState("None");
-                    this.byId("input-b").setValueStateText("");
                 
-                }
             },
 
-            Vencode: async function (oEvent) {
-                debugger
-                var Vencode = this.byId("input-e").getValue()
-                if(Vencode){
-                    this.byId("input-e").setValueState("None");
-                    this.byId("input-e").setValueStateText("");
+            // Conid: async function (oEvent) {
+            //     debugger
+            //     var Conid = this.byId("input-b").getValue()
+            //     if(Conid){
+            //         this.byId("input-b").setValueState("None");
+            //         this.byId("input-b").setValueStateText("");
+                
+            //     }
+            // },
+
+            // Vencode: async function (oEvent) {
+            //     debugger
+            //     var Vencode = this.byId("input-e").getValue()
+            //     if(Vencode){
+            //         this.byId("input-e").setValueState("None");
+            //         this.byId("input-e").setValueStateText("");
                    
 
-                }
-            },
+            //     }
+            // },
 
         
             advceno: async function (oEvent) {
@@ -164,20 +236,23 @@ sap.ui.define([
             //     }
             // },
 
+
             advancevaluechange: async function (oEvent) {
                 debugger
                 var advanceval =  this.byId("advancevalue").getValue()
                 var totalvalueamt = this.byId("input-12").getValue()
 
-                if(advanceval > totalvalueamt){
+                if(parseFloat(advanceval) > parseFloat(totalvalueamt)){
                     this.byId("advancevalue").setValueState("Error");
                     this.byId("advancevalue").setValueStateText("Amont should be less than total value");
+                    this.byId("submit").setVisible(false);
                    
 
                 }
-                else{
+                else if(parseFloat(advanceval) <= parseFloat(totalvalueamt)){
                     this.byId("advancevalue").setValueState("None");
                     this.byId("advancevalue").setValueStateText("");
+                    this.byId("submit").setVisible(true);
 
                 }
             },
@@ -202,22 +277,12 @@ sap.ui.define([
                 var contract_no =  this.byId("input-b").getValue()
                 var vendor_code =  this.byId("input-e").getValue()
                 var vendor_name =  this.byId("input-c").getValue()
+                var textArea = this.byId("ta").mProperties.value
+                var email = this.byId("input-f").mProperties.value
+                var vendorGstin = this.byId("input-d").mProperties.value
 
                 
-                
-                var funname = "advancepayment";
-                let funname1 = this.getView().getModel().bindContext(`/${funname}(...)`);
-                funname1.setParameter('advancePayNo', advanceno);
-                funname1.setParameter('ponumber', po_number);
-                funname1.setParameter('advancePayDate', advancedate);
-                funname1.setParameter('advancePayValue', advanceval);
-
-                try {
-                    await funname1.execute();
-                } catch (error) {
-                    //
-                    console.log(error)
-                }
+             
 
 
                 debugger
@@ -228,6 +293,9 @@ sap.ui.define([
                 fname1.setParameter('vendor_code', vendor_code);
                 fname1.setParameter('advancePayValue', advanceval);
                 fname1.setParameter('venname', vendor_name);
+                fname1.setParameter('textArea', textArea);
+                fname1.setParameter('email', email);
+                fname1.setParameter('vendorGstin', vendorGstin);
 
                 try {
                     await fname1.execute();
@@ -236,12 +304,29 @@ sap.ui.define([
                     console.log(error)
                 }
 
-
                 console.log("func completed");
+
+                   
+               
 
                 let context = fname1.getBoundContext();
                 let getdata = context.getValue();
                 let registerid = getdata.value;
+
+                var funname = "advancepayment";
+                let funname1 = this.getView().getModel().bindContext(`/${funname}(...)`);
+                funname1.setParameter('advancePayNo', advanceno);
+                funname1.setParameter('regid', registerid);
+                funname1.setParameter('ponumber', po_number);
+                funname1.setParameter('advancePayDate', advancedate);
+                funname1.setParameter('advancePayValue', advanceval);
+
+                try {
+                    await funname1.execute();
+                } catch (error) {
+                    //
+                    console.log(error)
+                }
                 
                 let d = new sap.m.Dialog
                 ({
@@ -297,8 +382,10 @@ sap.ui.define([
                     await fname1.execute();
                     let context = fname1.getBoundContext();
                     let getdata = context.getValue();
-                    let vendname = getdata.value;
-                    this.byId("input-c").setValue(vendname)
+                    let headerdata = getdata.value;
+                    this.byId("input-c").setValue(headerdata.vendorName)
+                    this.byId("input-f").setValue(headerdata.email)
+                    this.byId("input-d").setValue(headerdata.vendorGstin)
                     this.byId("table").mBindingInfos.items.binding.refresh
 
                 } catch (error) {
@@ -319,6 +406,8 @@ sap.ui.define([
                     })
                 );
 
+                this.byId("table").mBindingInfos.items.binding.refresh
+
                 var path1 = this.byId("helo").mBindingInfos.items.binding;
 
                 path1.filter
@@ -329,19 +418,18 @@ sap.ui.define([
                       value1: po_number
                   })
                 );
-                sap.ui.getCore().byId('container-submitform---form--helo').mBindingInfos.items.binding.refresh();
+                this.byId("helo").mBindingInfos.items.binding.refresh;
+
+                var path1 = this.byId("uploadSet").mBindingInfos.items.binding;
+
+                path1.filter(
+                  new sap.ui.model.Filter({
+                      path: "registration_id",
+                      operator: sap.ui.model.FilterOperator.EQ,
+                      value1: 'test'
+                  })
+              );
                 
-
-                var path2 = this.byId("uploadSet").mBindingInfos.items.binding;
-
-                path2.filter
-                (
-                    new sap.ui.model.Filter({
-                        path: "po_number",
-                        operator: sap.ui.model.FilterOperator.EQ,
-                        value1: po_number
-                    })
-                  );
 
 
             },
@@ -350,18 +438,22 @@ sap.ui.define([
                 var item = oEvent.getParameter("item");
                 // var url1 = this._view.getModel().sServiceUrl;
                 var url1 = this.oView.getModel().sServiceUrl;
+                pokey = this.byId("input-1").getValue()
+                
+                debugger
                 var _createEntity = function (item) {
-                    // var path1 = window.location.href;
-                    // 	var regex = /poheader='(\d+)'/;
-                    // 	var match = path1.match(regex);
-                    	var key = sap.ui.getCore().byId("container-submitform---form--input-1").mProperties.value
+                   
+                    debugger
                     var data = {
                         mediaType: item.getMediaType(),
                         fileName: item.getFileName(),
                         size: item.getFileObject().size,
-                        po_number :key
+                        po_number : pokey,
+                        registration_id : 'test'
 
                     };
+                    
+                    debugger
                     var settings = {
                         // url: "/odata/v4/my/Files",
                         url: url1 + `Files`,
@@ -371,6 +463,8 @@ sap.ui.define([
                         },
                         data: JSON.stringify(data)
                     };
+
+                    debugger
                     return new Promise((resolve, reject) => {
                         $.ajax(settings)
                             .done((results, textStatus, request) => {
@@ -381,10 +475,11 @@ sap.ui.define([
                             });
                     });
                 };
+                debugger
                 _createEntity(item)
                     .then((fileId) => {
-                        //
-                        var url = `/odata/v4/my/Files(${fileId})/content`;
+                        // var url = `/odata/v4/my/Files(${fileId})/content`;
+                        var url = url1 + `Files(${fileId})/content`
                         // var url = url1 + `Files(ID=${ids[1]},fileId=${ids[0]})/content`;
                         item.setUploadUrl(url);
                         var oUploadSet = this.byId("uploadSet");
@@ -395,59 +490,72 @@ sap.ui.define([
                         console.log(err);
                     });
             },
+
             onUploadCompleted: function (oEvent) {
-                //
+                debugger
                 var oUploadSet = this.byId("uploadSet");
                 oUploadSet.removeAllIncompleteItems();
+                // var po = this.byId("input-1").mProperties.value;
+                var path1 = this.byId("uploadSet").mBindingInfos.items.binding;
+
+                path1.filter(
+                  new sap.ui.model.Filter({
+                      path: "registration_id",
+                      operator: sap.ui.model.FilterOperator.EQ,
+                      value1: 'test'
+                  })
+              );
+
+
                 oUploadSet.getBinding("items").refresh();
             },
 
             onRemovePressed: function (oEvent) {
                 oEvent.preventDefault();
                 oEvent.getParameter("item").getBindingContext().delete();
-                MessageToast.show("Selected file has been deleted");
+                // MessageToast.show("Selected file has been deleted");
             },
-            onOpenPressed: function (oEvent) {
-                //;
-                oEvent.preventDefault();
-                var item = oEvent.getSource();
-                var fileName = item.getFileName();
-
-                var _download = function (item) {
-                    var settings = {
-                        url: item.getUrl(),
-                        method: "GET",
-                        headers: {
-                            "Content-type": "application/octet-stream"
-                        },
-                        xhrFields: {
-                            responseType: 'blob'
-                        }
-                    };
-
-                    return new Promise((resolve, reject) => {
-                        $.ajax(settings)
-                            .done((result) => {
-                                console.log('Downloaded Blob:', result);
-                                resolve(result);
-                            })
-                            .fail((err) => {
-                                console.error('Download Error:', err);
-                                reject(err);
-                            });
-                    });
-                };
-
-                _download(item)
-                    .then((blob) => {
-                        var url = window.URL.createObjectURL(blob);
-                        // Open the URL in a new tab
-                        window.open(url, '_blank');
-                    })
-                    .catch((err) => {
-                        console.log(err);
-                    });
-            },
+            onOpenPressed: function(oEvent) {
+				debugger;
+				// oEvent.preventDefault();
+				// var item = oEvent.getSource();
+				// var fileName = item.getFileName();
+			
+				// var _download = function(item) {
+				// 	var settings = {
+				// 		url: item.getUrl(),
+				// 		method: "GET",
+				// 		headers: {
+				// 			"Content-type": "application/octet-stream"
+				// 		},
+				// 		xhrFields: {
+				// 			responseType: 'blob'
+				// 		}
+				// 	};
+			
+				// 	return new Promise((resolve, reject) => {
+				// 		$.ajax(settings)
+				// 			.done((result) => {
+				// 				console.log('Downloaded Blob:', result);
+				// 				resolve(result);
+				// 			})
+				// 			.fail((err) => {
+				// 				console.error('Download Error:', err);
+				// 				reject(err);
+				// 			});
+				// 	});
+				// };
+			
+				// _download(item)
+				// 	.then((blob) => {
+				// 		var url = window.URL.createObjectURL(blob);
+				// 		// Open the URL in a new tab
+				// 		window.open(url, '_blank');
+				// 	})
+				// 	.catch((err) => {
+				// 		console.log(err);
+				// 	});
+			},
             _download: function (item) {
                 var settings = {
                     url: item.getUrl(),
@@ -474,7 +582,7 @@ sap.ui.define([
                 var data = {
                     mediaType: item.getMediaType(),
                     fileName: item.getFileName(),
-                    size: item.getFileObject().size
+                    size: item.getFileObject().size,
                 };
 
                 var settings = {
@@ -498,8 +606,7 @@ sap.ui.define([
             },
 
             _uploadContent: function (item, id) {
-                //
-
+                // 
                 var url = `/my/Files(${fileId})/content`;
                 // var url = `/my/Files(ID=${ids[1]},fileId=${ids[0]})/content`
                 item.setUploadUrl(url);
@@ -549,11 +656,12 @@ sap.ui.define([
                         oFunc.setParameter('type', 'checked');
                         await oFunc.execute();
 
-                        sap.ui.getCore().byId('container-submitform---form--table').mBindingInfos.items.binding.refresh();
+                        // sap.ui.getCore().byId('container-submitform---form--table').mBindingInfos.items.binding.refresh();
                         this.byId("helo").mBindingInfos.items.binding.refresh();
-                        sap.ui.getCore().byId('container-submitform---form--helo').mBindingInfos.items.binding.refresh();
+                        this.byId("table").mBindingInfos.items.binding.refresh();
+                        // sap.ui.getCore().byId('container-submitform---form--helo').mBindingInfos.items.binding.refresh();
                         if (oFunc.getBoundContext().getValue().value == "true") {
-                            var amount = count[i].mAggregations.cells[10].mProperties.text;
+                            var amount = count[i].mAggregations.cells[12].mProperties.text;
                             if (amount.includes(',')) {
                                 amount = parseFloat(amount.replace(/,/g, ''));
                             } else {
@@ -573,8 +681,10 @@ sap.ui.define([
                             oFunc.setParameter('cgst', cgst_string);
                             oFunc.setParameter('sgst', sgst_string);
                             await oFunc.execute();
-                            sap.ui.getCore().byId('container-submitform---form--helo').mBindingInfos.items.binding.refresh();
-                            sap.ui.getCore().byId('container-submitform---form--table').mBindingInfos.items.binding.refresh();
+                            this.byId("helo").mBindingInfos.items.binding.refresh();
+                        this.byId("table").mBindingInfos.items.binding.refresh();
+                            // sap.ui.getCore().byId('container-submitform---form--helo').mBindingInfos.items.binding.refresh();
+                            // sap.ui.getCore().byId('container-submitform---form--table').mBindingInfos.items.binding.refresh();
                             var Sgst = parseFloat(count[i].mAggregations.cells[9].mProperties.text)
                             total_Sgst = parseFloat(total_Sgst) + res_sgst;
                             var Cgst = parseFloat(count[i].mAggregations.cells[8].mProperties.text)
@@ -591,8 +701,10 @@ sap.ui.define([
                         oFunc.setParameter('content', lineItemId);
                         oFunc.setParameter('type', 'unchecked');
                         await oFunc.execute();
-                        sap.ui.getCore().byId('container-submitform---form--helo').mBindingInfos.items.binding.refresh();
-                        sap.ui.getCore().byId('container-submitform---form--table').mBindingInfos.items.binding.refresh();
+                        this.byId("helo").mBindingInfos.items.binding.refresh();
+                        this.byId("table").mBindingInfos.items.binding.refresh();
+                        // sap.ui.getCore().byId('container-submitform---form--helo').mBindingInfos.items.binding.refresh();
+                        // sap.ui.getCore().byId('container-submitform---form--table').mBindingInfos.items.binding.refresh();
                     }
                 }
                 total_amount = parseFloat(total_amount.toFixed(2));
@@ -642,26 +754,36 @@ sap.ui.define([
 
             },
 
+            clear: async function (oEvent) {
+                debugger
+                location.reload()
+            },
+
             submit: async function (oEvent) {
                 //
                 debugger
+                var poNum = this.byId("input-1").mProperties.value;
                 var itemId = oEvent.getSource().getParent().mAggregations.cells[0].mProperties.text;
                 var quantity = parseFloat(oEvent.mParameters.value);
-                var main_quantity = sap.ui.getCore().byId('container-submitform---form--table').mBindingInfos.items.binding.oCache.aElements;
-                for (let i = 0; i < main_quantity.length; i++) {
-                    if (itemId == main_quantity[i].itemno && quantity > parseFloat(main_quantity[i].quantity_static)) {
-                        oEvent.getSource().setValueState("Error")
-                        oEvent.getSource().setValueStateText(`Quantity is more than ${main_quantity[i].quantity_static}`);
-                    }
-                    else if (itemId == main_quantity[i].itemno && quantity <= parseFloat(main_quantity[i].quantity_static)) {
-                        oEvent.getSource().setValueState("None")
-                    }
+                let func = "fm3";
+                var oFunc = oEvent.oSource.getParent().getModel().bindContext(`/${func}(...)`);
+                oFunc.setParameter('poNum', poNum);
+                oFunc.setParameter('itemId', itemId);
+                await oFunc.execute();
+                var table = oFunc.getBoundContext().getValue().value;
+                var parse = JSON.parse(table);
+                if(quantity > parseFloat(parse[0].quantity_static))
+                {
+                    oEvent.getSource().setValueState("Error")
+                    oEvent.getSource().setValueStateText(`Quantity is more than ${parse[0].quantity_static}`);
                 }
-                var itemId = oEvent.getSource().getParent().mAggregations.cells[0].mProperties.text;
+                else if(quantity <= parseFloat(parse[0].quantity_static))
+                {
+                    oEvent.getSource().setValueState("None")
+                    var itemId = oEvent.getSource().getParent().mAggregations.cells[0].mProperties.text;
                 var unitPrice = oEvent.getSource().getParent().mAggregations.cells[4].mProperties.text;
                 var cgst = oEvent.getSource().getParent().mAggregations.cells[6].mProperties.text;
                 var sgst = oEvent.getSource().getParent().mAggregations.cells[7].mProperties.text;
-                let poNum = this.byId("input-1").mProperties.value;
                 let funcname = "fm2";
                 var oFunc = oEvent.oSource.getParent().getModel().bindContext(`/${funcname}(...)`);
                 oFunc.setParameter('poNum', poNum);
@@ -674,11 +796,13 @@ sap.ui.define([
                 //;
                 var table = oFunc.getBoundContext().getValue().value;
                 var parse = JSON.parse(table);
+                this.byId("helo").mBindingInfos.items.binding.refresh();
+                        this.byId("table").mBindingInfos.items.binding.refresh();
                 //Updates cgst value and sgst value after changing quantity;
                 // sap.ui.getCore().byId('container-submitform---form--helo').mBindingInfos.items.binding.refresh();
-                this.byId("helo").mBindingInfos.items.binding.refresh();
-                sap.ui.getCore().byId('container-submitform---form--table').mBindingInfos.items.binding.refresh();
-                sap.ui.getCore().byId('container-submitform---form--table').mBindingInfos.items.binding.refresh();
+                // this.byId("helo").mBindingInfos.items.binding.refresh();
+                // sap.ui.getCore().byId('container-submitform---form--table').mBindingInfos.items.binding.refresh();
+                // sap.ui.getCore().byId('container-submitform---form--table').mBindingInfos.items.binding.refresh();
                 var total_amount = 0;
                 var total_Sgst = 0;
                 var total_Cgst = 0;
@@ -717,7 +841,9 @@ sap.ui.define([
                     // totalval = parseFloat(totalval) + total_amount + total_Sgst + total_Cgst
 
                 }
-                sap.ui.getCore().byId('container-submitform---form--helo').mBindingInfos.items.binding.refresh();
+                // sap.ui.getCore().byId('container-submitform---form--helo').mBindingInfos.items.binding.refresh();
+                this.byId("helo").mBindingInfos.items.binding.refresh();
+                        // this.byId("table").mBindingInfos.items.binding.refresh();
                 total_amount = parseFloat(total_amount.toFixed(2));
                 this.byId("input-a").setValue(total_amount);
                 total_Cgst = parseFloat(total_Cgst.toFixed(2));
@@ -733,6 +859,8 @@ sap.ui.define([
             }
 
 
+                }
+                
 
         });
     });

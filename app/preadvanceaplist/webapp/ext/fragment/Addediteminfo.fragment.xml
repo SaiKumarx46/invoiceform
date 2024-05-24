@@ -8,7 +8,7 @@
 <core:FragmentDefinition xmlns:core="sap.ui.core" xmlns="sap.m" xmlns:macros="sap.fe.macros">
 	  <VBox>
         <Table id="table" items="{
-								path: '/checkedpolineitem' 
+								path: '/checkeditem' 
                                 }">
             <columns>
                 <Column width="10rem">
@@ -48,18 +48,18 @@
             <items >
                 <ColumnListItem>
                     <cells>
-                        <Text text="{itemno}"  />
-                        <Text text="{item_desc}"/>
-                        <Text text="{item_desc_cond}" />
-                        <Text text="{plant}" />
-                        <Text text="{unit_price}" />
-                        <Text text="{quantity}" />
+                        <Text text="{itemno1}"  />
+                        <Text text="{item_desc1}"/>
+                        <Text text="{item_desc_cond1}" />
+                        <Text text="{plant1}" />
+                        <Text text="{unit_price1}" />
+                        <Text text="{quantity1}" />
                         <!-- <Input  core:require="{ handler: 'preadvanceaplist/ext/fragment/Addediteminfo'}" submit="handler.submit" value="{quantity}"></Input> -->
-                        <Text text="{cgst_percentage}" />
-                        <Text text="{sgst_percentage}" />
-                        <Text text="{cgst_value}" />
-                        <Text text="{sgst_value}" />
-                        <Text text="{amount}" />
+                        <Text text="{cgst_percentage1}" />
+                        <Text text="{sgst_percentage1}" />
+                        <Text text="{cgst_value1}" />
+                        <Text text="{sgst_value1}" />
+                        <Text text="{amount1}" />
                     </cells>
                      <!-- <cells>
                         <Text text="1" />

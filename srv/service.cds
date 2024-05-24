@@ -6,6 +6,7 @@ service MyService {
 
     @cds.redirection.target
     entity polineitem        as projection on s1.polineitem;
+    entity checkeditem        as projection on s1.checkeditem ;
 
     entity checkedpolineitem as projection on s1.polineitem
                                 where
@@ -13,6 +14,8 @@ service MyService {
 
     entity invoice           as projection on s1.invoice;
     entity Files             as projection on s1.Files;
+    entity comment as projection on s1.comment;
+    entity valuehelp as projection on s1.valuehelp;
     
     function getcallfromodata(po_number : String , contract_no : String , vendor_code : String) returns String;
     // function postcall(po_number : String , contract_no : String , vendor_code : String,
@@ -22,11 +25,15 @@ service MyService {
     // unitPrice : String,TotalValue : String,cgstPerc : String,sgstPerc : String,
     // cgstValue : String,sgstValue : String) returns String;
 
-    function postcall(po_number : String , contract_no : String , vendor_code : String,advancePayValue : String,venname : String) returns String;
-    function advancepayment(advancePayNo : String ,ponumber:String, advancePayDate : String , advancePayValue : String) returns String;
+    function postcall(po_number : String , contract_no : String , vendor_code : String,advancePayValue : String,venname : String , textArea  :String,email : String,vendorGstin : String) returns String;
+    function getcallforobj(registterid : String) returns String;
+    function advancepayment(advancePayNo : String ,ponumber:String, advancePayDate : String , advancePayValue : String,regid : String) returns String;
     function fm1(id : String , content : String , type : String) returns String;
     function fm2(poNum : String , itemId : String , quantity : String , unitPrice : String , sgst_value : String , cgst_value : String) returns String;
+    function fm3(poNum : String , itemId : String ) returns String;
     function cgst(poNum : String , itemId : String , cgst : String , sgst : String) returns String;
     function amount_validate(poNum : String , itemId : String , quantity : String)returns String;
+     function getcallcomment(registration_id : String) returns String;
+     function valuehelp1(vencode : String) returns String;
 }
  

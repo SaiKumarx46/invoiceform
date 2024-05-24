@@ -8,23 +8,27 @@
 	<HBox id="_IDGenHBox1" >
     <VBox class="form-element">
         <Label id="PoId" text="PO Number" labelFor="input-a"/>
-        <Input editable="false" id="input-a" required="true" width="200px"/>
+        <Input editable="false" id="input-a"  width="175px"/>
     </VBox>
     <VBox class="form-element">
         <Label id="Conid" text="Contact No" labelFor="input-b"/>
-        <Input editable="false" id="input-b" required="true" width="200px"/>
+        <Input editable="false" id="input-b"  width="175px"/>
     </VBox>
     <VBox class="form-element">
         <Label id="Venname" text="Vendor Name" labelFor="input-c"/>
-        <Input editable="false" id="input-c" width="200px"/>
+        <Input editable="false" id="input-c" width="175px"/>
     </VBox>
     <VBox class="form-element">
         <Label id="Vengst" text="Vendor GSTN" labelFor="input-d"/>
-        <Input editable="false" id="input-d" width="200px"/>
+        <Input editable="false" id="input-d" width="175px"/>
     </VBox>
     <VBox class="form-element">
         <Label id="Vencode" text="Vendor Code" labelFor="input-e"/>
-        <Input editable="false" id="input-e" required="true" width="200px"/>
+        <Input editable="false" id="input-e"  width="175px"/>
+    </VBox>
+     <VBox class="form-element">
+        <Label id="mail" text="Approver Mail" labelFor="input-f"/>
+        <Input editable="false" id="input-f"  width="175px"/>
     </VBox>
     <!-- <VBox class="go_btn_vbox">
     <Button id="_IDGenButton1" core:require="{ handler: 'advancedpayment/ext/fragment/LineItems'}" text="Go" press="handler.onPress" />

@@ -131,15 +131,15 @@ annotate service.poheader with @(
             $Type : 'UI.DataFieldForIntentBasedNavigation',
             SemanticObject : 'submitform',
             Action : 'display',
-            Label : 'With-PO Advance payment request',
+            Label : 'With-PO Advance Payment Request',
         },
     ],
 );
 annotate service.invoice with {
-    advance_payment_no @Common.Label : 'Advance payment number '
+    advance_payment_no @Common.Label : 'Advance Payment Number '
 };
 annotate service.poheader with {
-    creation_date @Common.Label : 'Creation date range '
+    creation_date @Common.Label : 'Creation Date Range '
 };
 
 annotate service.poheader with @(Capabilities.Deletable: false);
@@ -148,7 +148,7 @@ annotate service.poheader with {
     status @Common.Label : 'Status '
 };
 annotate service.poheader with {
-    vendor_name @Common.Label : 'vendor_name'
+    vendor_name @Common.Label : 'Vendor Name'
 };
 
 

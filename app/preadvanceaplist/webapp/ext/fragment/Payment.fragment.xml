@@ -9,16 +9,16 @@
 	<HBox id="_IDGenHBox1">
 		
 		<VBox  class="form-element">
-			<Label id = "advanceno" text="Advance payment number" labelFor="input-a" />
-			<Input editable="false" id="input-a" required="true" width="200px" />
+			<Label id = "advanceno" text="Advance Payment Number" labelFor="input-a" />
+			<Input editable="false" id="input-1" required="true" width="200px" />
 		</VBox>
 		<VBox  class="form-element">
-			<Label id = "advnacedate" text="Advance payment date" labelFor="input-b" />
-			<Input editable="false" id="input-b" required="true" width="200px" />
+			<Label id = "advnacedate" text="Advance Payment Date" labelFor="input-b" />
+			<Input editable="false" id="input-2" required="true" width="200px" />
 		</VBox>		
 		<VBox  class="form-element">
-			<Label id = "advancevalue" text="Adavnce payment value -INR" labelFor="input-c" />
-			<Input editable="false" id="input-c" required="true" width="200px" />
+			<Label id = "advancevalue" text="Advance Payment Value -INR" labelFor="input-c" />
+			<Input editable="false" id="input-3" required="true" width="200px" />
 		</VBox>
 	
 		<!-- <Button core:require="{ handler: 'advancedpayment/ext/fragment/Payment'}" text="Payment" press="handler.onPress" /> -->
