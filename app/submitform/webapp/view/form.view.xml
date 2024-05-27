@@ -141,7 +141,7 @@
                                                 <DatePicker id="advancedate"   liveChange="advnadate" width="200px" ></DatePicker>
                                             </VBox>		
                                             <VBox  class="form-element">
-                                                <Label id = "advevalue" text="Adavnce Payment Value -INR" labelFor="input-c" />
+                                                <Label id = "advevalue" text="Advance Payment Value -INR" labelFor="input-c" />
                                                 <Input id="advancevalue" width="200px" liveChange="advancevaluechange"/>
                                             </VBox>
                                         

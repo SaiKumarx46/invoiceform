@@ -295,7 +295,7 @@ module.exports = cds.service.impl(async function () {
 
 
       }));
-      console.log(bodyy);
+      console.log("bpabodyy",bodyy);
 
       let response11 = await BPA.post("/workflow/rest/v1/workflow-instances", bodyy);
 
