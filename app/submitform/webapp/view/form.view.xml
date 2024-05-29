@@ -53,8 +53,7 @@
                                                         showSecondaryValues="true"
                                                         selectionChange="onSelectionChange"
                                                         items="{
-                                                            path: '/valuehelp',
-                                                            sorter: { path: 'text' }
+                                                            path: '/valuehelp'
                                                         }">
                                                         <core:ListItem key="{key}" text="{po_number}" additionalText="{contract_number}" />
                                                     </ComboBox>
@@ -62,7 +61,7 @@
                                              </VBox>
                                             <VBox class="form-element">
                                                  <Label id="Conid" text="Contract Number" labelFor="input-b"/>
-                                                  <Input id="input-b" editable="false" width="170px"/>
+                                                  <Input id="input-b" editable="true" width="170px"/>
                                                   <!-- <Input id="input-b"  valueState="Error" valueStateText="Value is required" liveChange="Conid" width="170px"/> -->
                                             </VBox>
                                              <VBox class="form-element">

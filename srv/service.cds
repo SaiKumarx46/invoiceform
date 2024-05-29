@@ -7,7 +7,7 @@ service MyService {
     @cds.redirection.target
     entity polineitem        as projection on s1.polineitem;
     entity checkeditem        as projection on s1.checkeditem ;
-
+ 
     entity checkedpolineitem as projection on s1.polineitem
                                 where
                                     checked = 'true';

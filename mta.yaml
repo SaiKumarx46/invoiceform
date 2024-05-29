@@ -9,6 +9,7 @@ modules:
   requires:
   - name: invoiceform-db
   - name: LP_Connectivity
+  - name: TLP_Connectivity
   - name: invoice-form-destination-service
   - name: uaa_invoiceform
   provides:
@@ -112,6 +113,11 @@ resources:
   type: org.cloudfoundry.managed-service
   parameters:
     service: connectivity
+    service-plan: lite
+- name: TLP_Connectivity
+  type: org.cloudfoundry.managed-service
+  parameters:
+    service: destination
     service-plan: lite
 - name: invoice-form-destination-service
   type: org.cloudfoundry.managed-service

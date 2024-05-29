@@ -52,6 +52,20 @@
                 "max": 500,
                 "min": 10
             },
+            "BPA_S": {
+                "kind": "odata-v2",
+                "csrf": true,
+                "csrfInBatch": true,
+                "credentials": {
+                    "destination": "BPA_S",
+                    "requestTimeout": 120000
+                },
+                "destinationOptions": {
+                    "selectionStrategy": "alwaysProvider",
+                    "jwt": null
+                }
+            },
+           
             "db": "hana",
             "auth": "dummy"
         }

@@ -15,7 +15,7 @@
 //                 //
 
 //                 var po_number = oEvent.oSource.oParent.oParent.mAggregations.items[0].mAggregations.items[1].mProperties.value
-//                 var contract_no = oEvent.oSource.oParent.oParent.mAggregations.items[1].mAggregations.items[1].mProperties.value
+//                 var contract_no = oEvencds t.oSource.oParent.oParent.mAggregations.items[1].mAggregations.items[1].mProperties.value
 //                 var vendor_code = oEvent.oSource.oParent.oParent.mAggregations.items[4].mAggregations.items[1].mProperties.value
 
 //                 //
@@ -55,6 +55,9 @@ sap.ui.define([
         var total_Sgst = 0;
         var total_Cgst = 0;
         var pokey;
+        var fname1;
+        var fname11;
+        var funname1;
         return Controller.extend("submitform.controller.form", {
             onInit: async function () {
                    
@@ -97,30 +100,36 @@ sap.ui.define([
             onBeforeRendering: async function (oEvent) {
                 debugger
                     var vencode = this.byId("input-e").mProperties.value;
-					let funcname = "valuehelp1";
-                    var oFunc = this.getView().getModel().bindContext(`/${funcname}(...)`);
-                    oFunc.setParameter('vencode', vencode);
-                    await oFunc.execute();
-                    let context = oFunc.getBoundContext();
-                    let getdata = context.getValue();
-                    let res = getdata.value;
-                    let result = JSON.parse(res)
+                    var funname = "advancepayment";
+                    funname1 = this.getView().getModel().bindContext(`/${funname}(...)`);
+                    var fname = "getcallfromodata";
+                    fname1 = this.getView().getModel().bindContext(`/${fname}(...)`);
+                    var fname = "postcall";
+                    fname11 = this.getView().getModel().bindContext(`/${fname}(...)`);
+					// let funcname = "valuehelp1";
+                    // var oFunc = this.getView().getModel().bindContext(`/${funcname}(...)`);
+                    // oFunc.setParameter('vencode', vencode);
+                    // await oFunc.execute();
+                    // let context = oFunc.getBoundContext();
+                    // let getdata = context.getValue();
+                    // let res = getdata.value;
+                    // let result = JSON.parse(res)
                     
-                    let valuehe = result.map(item => ({
-                        po_number: `${item.po_number}`,
-                        contract_number:`${item.contract_number}`,
+                //     let valuehe = result.map(item => ({
+                //         po_number: `${item.po_number}`,
+                //         contract_number:`${item.contract_number}`,
                         
                         
-                    }));
+                //     }));
 
 
         
-                    var val = {
-                    "valuehelp": valuehe
-                };
+                //     var val = {
+                //     "valuehelp": valuehe
+                // };
     
-                var oModel = new JSONModel(val);
-                this.getView().setModel(oModel);
+                // var oModel = new JSONModel(val);
+                // this.getView().setModel(oModel);
 
                 var id = this.byId("input-1").mProperties.value;
                 //FILTER FOR LINE ITEMS
@@ -132,6 +141,8 @@ sap.ui.define([
                         value1: ''
                     })
                 );
+                this.byId("table").mBindingInfos.items.binding.refresh()
+                
                 var path2 = this.byId("helo").mBindingInfos.items.binding;
                 path2.filter(
                     new sap.ui.model.Filter({
@@ -141,6 +152,7 @@ sap.ui.define([
                     })
                 );
 
+                this.byId("helo").mBindingInfos.items.binding.refresh();
 
                 //FILTER FOR ADDED ITEM INFO
                 var path1 = this.byId("uploadSet").mBindingInfos.items.binding;
@@ -152,6 +164,8 @@ sap.ui.define([
                       value1: 'test'
                   })
               );
+
+              this.byId("uploadSet").mBindingInfos.items.binding.refresh();
 
 
                 
@@ -286,19 +300,18 @@ sap.ui.define([
 
 
                 debugger
-                var fname = "postcall";
-                let fname1 = this.getView().getModel().bindContext(`/${fname}(...)`);
-                fname1.setParameter('po_number', po_number);
-                fname1.setParameter('contract_no', contract_no);
-                fname1.setParameter('vendor_code', vendor_code);
-                fname1.setParameter('advancePayValue', advanceval);
-                fname1.setParameter('venname', vendor_name);
-                fname1.setParameter('textArea', textArea);
-                fname1.setParameter('email', email);
-                fname1.setParameter('vendorGstin', vendorGstin);
+           
+                fname11.setParameter('po_number', po_number);
+                fname11.setParameter('contract_no', contract_no);
+                fname11.setParameter('vendor_code', vendor_code);
+                fname11.setParameter('advancePayValue', advanceval);
+                fname11.setParameter('venname', vendor_name);
+                fname11.setParameter('textArea', textArea);
+                fname11.setParameter('email', email);
+                fname11.setParameter('vendorGstin', vendorGstin);
 
                 try {
-                    await fname1.execute();
+                    await fname11.execute();
                 } catch (error) {
                     //
                     console.log(error)
@@ -309,12 +322,11 @@ sap.ui.define([
                    
                
 
-                let context = fname1.getBoundContext();
+                let context = fname11.getBoundContext();
                 let getdata = context.getValue();
                 let registerid = getdata.value;
 
-                var funname = "advancepayment";
-                let funname1 = this.getView().getModel().bindContext(`/${funname}(...)`);
+               
                 funname1.setParameter('advancePayNo', advanceno);
                 funname1.setParameter('regid', registerid);
                 funname1.setParameter('ponumber', po_number);
@@ -372,8 +384,7 @@ sap.ui.define([
                 var contract_no = oEvent.oSource.oParent.oParent.mAggregations.items[1].mAggregations.items[1].mProperties.value
                 var vendor_code = oEvent.oSource.oParent.oParent.mAggregations.items[4].mAggregations.items[1].mProperties.value
                 // var venname = oEvent.oSource.oParent.oParent.mAggregations.items[2].mAggregations.items[1].mProperties.value
-                var fname = "getcallfromodata";
-                let fname1 = this.getView().getModel().bindContext(`/${fname}(...)`);
+               
                 fname1.setParameter('po_number', po_number);
                 fname1.setParameter('contract_no', contract_no);
                 fname1.setParameter('vendor_code', vendor_code);
@@ -386,7 +397,6 @@ sap.ui.define([
                     this.byId("input-c").setValue(headerdata.vendorName)
                     this.byId("input-f").setValue(headerdata.email)
                     this.byId("input-d").setValue(headerdata.vendorGstin)
-                    this.byId("table").mBindingInfos.items.binding.refresh
 
                 } catch (error) {
                     //
@@ -406,7 +416,7 @@ sap.ui.define([
                     })
                 );
 
-                this.byId("table").mBindingInfos.items.binding.refresh
+                this.byId("table").mBindingInfos.items.binding.refresh()
 
                 var path1 = this.byId("helo").mBindingInfos.items.binding;
 
@@ -418,7 +428,7 @@ sap.ui.define([
                       value1: po_number
                   })
                 );
-                this.byId("helo").mBindingInfos.items.binding.refresh;
+                this.byId("helo").mBindingInfos.items.binding.refresh();
 
                 var path1 = this.byId("uploadSet").mBindingInfos.items.binding;
 
@@ -429,6 +439,8 @@ sap.ui.define([
                       value1: 'test'
                   })
               );
+              this.byId("uploadSet").mBindingInfos.items.binding.refresh();
+             
                 
 
 
@@ -436,8 +448,16 @@ sap.ui.define([
             onAfterItemAdded: function (oEvent) {
                 debugger
                 var item = oEvent.getParameter("item");
+                var sServiceUrl = this.getOwnerComponent().oModels.undefined.sServiceUrl;
+                if (sServiceUrl) {
+                   var url1 = sServiceUrl;
+                }
+                else
+                {
+                    url1 = '/odata/v4/Files'
+                }
                 // var url1 = this._view.getModel().sServiceUrl;
-                var url1 = this.oView.getModel().sServiceUrl;
+                // var url1 = this.oView.getModel().sServiceUrl;
                 pokey = this.byId("input-1").getValue()
                 
                 debugger
@@ -457,7 +477,7 @@ sap.ui.define([
                     var settings = {
                         // url: "/odata/v4/my/Files",
                         url: url1 + `Files`,
-                        method: "POST",
+                        method: "POST", 
                         headers: {
                             "Content-type": "application/json"
                         },
