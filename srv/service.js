@@ -320,8 +320,13 @@ module.exports = cds.service.impl(async function () {
     var vendor = req.data.vendor_code
     console.log("venddddd", vendor)
     var BPA = await cds.connect.to('INVOICE_DEST');
+
+    let abap = await BPA.get(`/sap/opu/odata/sap/Z_SALESDETAILS_16__SRV/SalesDetailsSet`);
+    console.log("abap", abap)
+   
     let destt = await BPA.get(`/sap/opu/odata/sap/ZMM_ADVANCE_PAY_SRV/buyerInfoSet(poNo='${po}',contractNo='${contract}',vendorCode='${vendor}')?$expand=advancePaymentLineItemsSet`);
     console.log("getcalll", destt)
+   
     let poline_items = await SELECT.from(polineitem).where({ po_number: req.data.po_number });
     if (poline_items.length == 0) {
 
