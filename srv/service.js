@@ -183,7 +183,8 @@ module.exports = cds.service.impl(async function () {
     console.log("desttttt", destt)
     console.log("regId", destt.regId)
     console.log("poheader", destt.poNo)
-    console.log("vendor_code", destt.supplierNo)
+    console.log("vendor_code", destt.vendorCode)
+    console.log("vendor_code_from function import", req.data.vendor_code)
 
     const d = new Date();
     const day = String(d.getDate()).padStart(2, '0');
@@ -196,7 +197,7 @@ module.exports = cds.service.impl(async function () {
       po_number: destt.poNo,
       contract_number: destt.contractNo,
       registration_id: destt.regId,
-      vendor_code: req.data.vendor_code,
+      vendor_code: destt.vendorCode,
       vendor_name: destt.vendorName,
       approver_mail: req.data.email,
       status: "Submitted",
