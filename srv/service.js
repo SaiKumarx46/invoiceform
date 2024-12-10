@@ -27,6 +27,7 @@ module.exports = cds.service.impl(async function () {
 
 
   });
+
   this.on('UPDATE', 'poheader', async (req, next) => {
     debugger
 
@@ -197,7 +198,7 @@ module.exports = cds.service.impl(async function () {
       po_number: destt.poNo,
       contract_number: destt.contractNo,
       registration_id: destt.regId,
-      vendor_code: destt.vendorCode,
+      vendor_code: req.data.vendor_code,
       vendor_name: destt.vendorName,
       approver_mail: req.data.email,
       status: "Submitted",
