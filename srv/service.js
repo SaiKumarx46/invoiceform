@@ -62,12 +62,12 @@ module.exports = cds.service.impl(async function () {
     const day1 = String(currentDate.getDate()).padStart(2, '0');
     const formattedDate1 = `${year1}${month1}${day1}`;
 
-    console.log("formattedDate1", formattedDate1)
-    console.log("req.data.po_number", req.data.po_number)
-    console.log("req.data.contract_no", req.data.contract_no)
-    console.log("req.data.venname", req.data.venname)
-    console.log("req.data.vendor_code", req.data.vendor_code)
-    console.log("req.data.advancePayValue", req.data.advancePayValue)
+    // console.log("formattedDate1", formattedDate1)
+    // console.log("req.data.po_number", req.data.po_number)
+    // console.log("req.data.contract_no", req.data.contract_no)
+    // console.log("req.data.venname", req.data.venname)
+    // console.log("req.data.vendor_code", req.data.vendor_code)
+    // console.log("req.data.advancePayValue", req.data.advancePayValue)
     let poline_items =  await SELECT.from(polineitem).where({ po_number: req.data.po_number, checked: 'true' });
 
     let advancePaymentLineItemsSet = poline_items.map(item => ({
@@ -177,22 +177,22 @@ module.exports = cds.service.impl(async function () {
     //     ]
     // }
 
-    console.log("datadss", data)
+    // console.log("datadss", data)
 
     var BPA = await cds.connect.to('INVOICE_DEST');
     let destt = await BPA.post(`/sap/opu/odata/sap/ZMM_ADVANCE_PAY_SRV/AdvancePayRequestSet`, data);
-    console.log("desttttt", destt)
-    console.log("regId", destt.regId)
-    console.log("poheader", destt.poNo)
-    console.log("vendor_code", destt.vendorCode)
-    console.log("vendor_code_from function import", req.data.vendor_code)
+    // console.log("desttttt", destt)
+    // console.log("regId", destt.regId)
+    // console.log("poheader", destt.poNo)
+    // console.log("vendor_code", destt.vendorCode)
+    // console.log("vendor_code_from function import", req.data.vendor_code)
 
     const d = new Date();
     const day = String(d.getDate()).padStart(2, '0');
     const month = String(d.getMonth() + 1).padStart(2, '0');
     const year = d.getFullYear();
     const formattedDate = `${day}-${month}-${year}`;
-    console.log("formattedDate", formattedDate)
+    // console.log("formattedDate", formattedDate)
 
     let insertheader = await INSERT.into(poheader).entries({
       po_number: destt.poNo,
@@ -211,7 +211,7 @@ module.exports = cds.service.impl(async function () {
 
     });
 
-    console.log("insertheader", insertheader)
+    // console.log("insertheader", insertheader)
 
     let comm = await INSERT.into(comment).entries({
 
@@ -220,7 +220,7 @@ module.exports = cds.service.impl(async function () {
 
     });
 
-    console.log("comm", comm)
+    // console.log("comm", comm)
 
 
 
@@ -229,7 +229,7 @@ module.exports = cds.service.impl(async function () {
 
     let checkedpoline_items = await SELECT.from(polineitem).where({ po_number: req.data.po_number, checked: 'true' });
 
-    console.log("checkedpoline_items", checkedpoline_items)
+    // console.log("checkedpoline_items", checkedpoline_items)
 
     for (var i = 0; i < checkedpoline_items.length; i++) {
       await INSERT.into(checkeditem).entries({
@@ -260,7 +260,7 @@ module.exports = cds.service.impl(async function () {
 
     let files1 = await SELECT.from(Files).where({ po_number: req.data.po_number });
 
-    console.log("files1", files1)
+    // console.log("files1", files1)
 
     // for(var i = 0 ;i < files1.length ; i++){
     //   await INSERT.into(files1).entries({ 
@@ -279,8 +279,8 @@ module.exports = cds.service.impl(async function () {
 
     let checkfalse = await UPDATE(polineitem).set({ checked: 'false' });
 
-    console.log("checkfalse", checkfalse)
-    console.log("desttttt", destt)
+    // console.log("checkfalse", checkfalse)
+    // console.log("desttttt", destt)
     let updatefile = await UPDATE(Files).set({ registration_id: destt.regId }).where({ po_number: destt.poNo, registration_id: 'test' });
 
 
@@ -294,7 +294,7 @@ module.exports = cds.service.impl(async function () {
     }
     // bodyy = JSON.stringify(bodyy)
 
-    console.log("bpabodyy", bodyy);
+    // console.log("bpabodyy", bodyy);
 
     var BPA = await cds.connect.to('BPA_S');
     let response11
@@ -306,7 +306,7 @@ module.exports = cds.service.impl(async function () {
     }
 
 
-    console.log("response11", response11)
+    // console.log("response11", response11)
 
     return destt.regId
 
@@ -320,34 +320,34 @@ module.exports = cds.service.impl(async function () {
     var po = req.data.po_number
     var contract = req.data.contract_no
     var vendor = req.data.vendor_code
-    console.log("venddddd", vendor)
+    // console.log("venddddd", vendor)
     var BPA = await cds.connect.to('INVOICE_DEST');
 
     let abap = await BPA.get(`/sap/opu/odata/sap/Z_SALESDETAILS_16__SRV/SalesDetailsSet`);
-    console.log("abap", abap)
+    // console.log("abap", abap)
    
     let destt = await BPA.get(`/sap/opu/odata/sap/ZMM_ADVANCE_PAY_SRV/buyerInfoSet(poNo='${po}',contractNo='${contract}',vendorCode='${vendor}')?$expand=advancePaymentLineItemsSet`);
-    console.log("getcalll", destt)
+    // console.log("getcalll", destt)
    
     let poline_items = await SELECT.from(polineitem).where({ po_number: req.data.po_number });
     if (poline_items.length == 0) {
 
-      console.log("startttttt")
-      // let destt = JSON.parse(values);
-      console.log("arraylentth", destt.advancePaymentLineItemsSet.length)
+      // console.log("startttttt")
+      // // let destt = JSON.parse(values);
+      // console.log("arraylentth", destt.advancePaymentLineItemsSet.length)
 
-      console.log("item no", destt.advancePaymentLineItemsSet[0].ItemNumber)
-      console.log("item no", destt.advancePaymentLineItemsSet[1].ItemNumber)
-      console.log("item no", destt.advancePaymentLineItemsSet[2].ItemNumber)
+      // console.log("item no", destt.advancePaymentLineItemsSet[0].ItemNumber)
+      // console.log("item no", destt.advancePaymentLineItemsSet[1].ItemNumber)
+      // console.log("item no", destt.advancePaymentLineItemsSet[2].ItemNumber)
 
       for (var i = 0; i < destt.advancePaymentLineItemsSet.length; i++) {
 
         var amtout = parseFloat(destt.advancePaymentLineItemsSet[i].unitPrice) * parseFloat(destt.advancePaymentLineItemsSet[i].lineItemQuantity)
-        console.log("amtout", amtout)
+        // console.log("amtout", amtout)
         var cgstoutval = (parseFloat(amtout) * parseFloat(destt.advancePaymentLineItemsSet[i].cgstPerc)) / 100
-        console.log("cgstoutval", cgstoutval)
+        // console.log("cgstoutval", cgstoutval)
         var sgstoutval = (parseFloat(amtout) * parseFloat(destt.advancePaymentLineItemsSet[i].sgstPerc)) / 100
-        console.log("sgstoutval", sgstoutval)
+        // console.log("sgstoutval", sgstoutval)
 
 
         await INSERT.into(polineitem).entries({
@@ -382,7 +382,7 @@ module.exports = cds.service.impl(async function () {
 
     }
 
-    console.log("destt.vendorName", destt.vendorName)
+    // console.log("destt.vendorName", destt.vendorName)
 
     return destt
 
@@ -455,7 +455,7 @@ module.exports = cds.service.impl(async function () {
 
     });
 
-    console.log("insert_invoice", insert_invoice)
+    // console.log("insert_invoice", insert_invoice)
 
   });
 
